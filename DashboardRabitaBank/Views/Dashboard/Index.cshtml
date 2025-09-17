@@ -1,0 +1,156 @@
+﻿<div class="main-panel">
+    <div class="content">
+        <div class="container-fluid">
+            <h4 class="page-title">Dashboard Information</h4>
+
+            <!-- Cards -->
+            <div class="row justify-content-center mb-4">
+                <!-- Instagram -->
+                <div class="col-md-3">
+                    <div class="card card-stats"
+                         style="background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4); color:white; border-radius:15px;">
+                        <div class="card-body d-flex justify-content-center align-items-center text-center" style="height:120px;">
+                            <div>
+                                <i class="la la-instagram" style="font-size:40px; display:block; margin-bottom:8px;"></i>
+                                <a asp-controller="dashboard" asp-action="instagram" style="text-decoration:none; color:#fff;">
+                                    <p class="card-category" style="margin:0; font-size:20px; font-weight:600;">Instagram</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google -->
+                <div class="col-md-3">
+                    <div class="card card-stats"
+                         style="background: linear-gradient(135deg, #4285F4, #34A853, #FBBC05, #EA4335); color:white; border-radius:15px;">
+                        <div class="card-body d-flex justify-content-center align-items-center text-center" style="height:120px;">
+                            <div>
+                                <i class="la la-google" style="font-size:40px; display:block; margin-bottom:8px;"></i>
+                                <a asp-controller="dashboard" asp-action="google" style="text-decoration:none; color:#fff;">
+                                    <p class="card-category" style="margin:0; font-size:20px; font-weight:600;">Google</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App -->
+                <div class="col-md-3">
+                    <div class="card card-stats"
+                         style="background: linear-gradient(135deg, #007AFF, #34A853, #5856D6); color:white; border-radius:15px;">
+                        <div class="card-body d-flex justify-content-center align-items-center text-center" style="height:120px;">
+                            <div>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/App_Store_%28iOS%29.svg"
+                                     alt="App Store" style="width:40px; height:40px; display:block; margin:0 auto 8px;" />
+                                <a asp-controller="dashboard" asp-action="app" style="text-decoration:none; color:#fff;">
+                                    <p class="card-category" style="margin:0; font-size:20px; font-weight:600;">App</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bars -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="progress-card mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Instagram Comment Statistics</span>
+                                    <span class="text-muted fw-bold">50%</span>
+                                </div>
+                                <div class="progress" style="height:7px;">
+                                    <div class="progress-bar" role="progressbar" style="width:78%; background:#E1306C;"></div>
+                                </div>
+                            </div>
+                            <div class="progress-card mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Google Comment Statistics</span>
+                                    <span class="text-muted fw-bold">35%</span>
+                                </div>
+                                <div class="progress" style="height:7px;">
+                                    <div class="progress-bar" role="progressbar" style="width:65%; background:#4285F4;"></div>
+                                </div>
+                            </div>
+                            <div class="progress-card mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">App Comment Statistics</span>
+                                    <span class="text-muted fw-bold">15%</span>
+                                </div>
+                                <div class="progress" style="height:7px;">
+                                    <div class="progress-bar" role="progressbar" style="width:30%; background:#34A853;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart with RabitaBank Logo -->
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="~/assets/img/rabitalogo.png"
+                                     alt="RabitaBank" style="width:50px; margin-right:10px;">
+                                <h5 class="mb-0">Monthly Comments Overview</h5>
+                            </div>
+                            <canvas id="rabitaChart" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('rabitaChart').getContext('2d');
+    const rabitaChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Instagram Comments',
+                data: [80, 90, 70, 85, 95, 100],
+                borderColor: '#E1306C',
+                backgroundColor: 'rgba(225,48,108,0.2)',
+                tension: 0.4
+            },
+            {
+                label: 'Google Comments',
+                data: [500, 450, 600, 550, 620, 576],
+                borderColor: '#4285F4',
+                backgroundColor: 'rgba(66,133,244,0.2)',
+                tension: 0.4
+            },
+            {
+                label: 'App Comments',
+                data: [30, 40, 25, 35, 28, 30],
+                borderColor: '#34A853',
+                backgroundColor: 'rgba(52,168,83,0.2)',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

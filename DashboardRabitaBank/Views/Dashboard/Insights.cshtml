@@ -1,0 +1,118 @@
+﻿@model List<DashboardRabitaBank.Models.Post>
+
+@{
+    ViewData["Title"] = "Instagram Insights";
+
+    // Ümumi sentiment statistikası bütün postların şərhlərindən
+    var allComments = Model
+        .Where(p => p.Comments != null)
+        .SelectMany(p => p.Comments)
+        .Where(c => c.Analysis != null)
+        .ToList();
+
+    var sentimentStats = allComments
+        .GroupBy(c => c.Analysis.Sentiment ?? "Other")
+        .Select(g => new { Sentiment = g.Key, Count = g.Count() })
+        .ToList();
+
+    var labels = sentimentStats.Select(s => s.Sentiment).ToList();
+    var data = sentimentStats.Select(s => s.Count).ToList();
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">@ViewData["Title"]</h2>
+
+    <!-- Ümumi Sentiment Chart -->
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body text-center">
+            <h4 class="card-title mb-4">Ümumi Şərh Statistikası</h4>
+
+            <!-- Chart mərkəzləşdirilmiş və ölçüsü kiçildilmiş -->
+            <div style="display:flex; justify-content:center; align-items:center;">
+                <canvas id="overallSentimentChart" style="max-width:250px; max-height:250px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var post in Model)
+    {
+        <div class="card shadow p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <h4>@post.PostInfo?.Caption</h4>
+                <p><strong>Owner:</strong> @post.PostInfo?.OwnerUsername</p>
+                <p><strong>Likes:</strong> @post.PostInfo?.LikesCount</p>
+                <p><strong>Timestamp:</strong> @(post.PostInfo?.Timestamp.ToString("yyyy-MM-dd HH:mm"))</p>
+
+                @if (!string.IsNullOrEmpty(post.PostInfo?.DisplayUrl))
+                {
+                    <img src="@post.PostInfo.DisplayUrl" alt="Post Image" style="width:300px;height:auto;" class="mb-3" />
+                }
+
+                <!-- Comments Table -->
+                <h5 class="mt-3">Şərhlər</h5>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Profile</th>
+                            <th>Username</th>
+                            <th>Comment</th>
+                            <th>Sentiment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comment in post.Comments)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(comment.CommentatorProfilePicUrl))
+                                    {
+                                        <img src="@comment.CommentatorProfilePicUrl"
+                                             alt="Profile Pic"
+                                             style="width:40px;height:40px;border-radius:50%;cursor:pointer;"
+                                             onclick="window.open('https://www.instagram.com/p/DNF7bh-NWY_', '_blank')" />
+                                    }
+                                </td>
+                                <td>@comment.CommentatorUserName</td>
+                                <td>@comment.CommentText</td>
+                                <td>@comment.Analysis?.Sentiment</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('overallSentimentChart').getContext('2d');
+        var overallChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(labels)),
+                datasets: [{
+                    label: 'Ümumi Şərh Statistikası',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(data)),
+                    backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#6c757d'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
