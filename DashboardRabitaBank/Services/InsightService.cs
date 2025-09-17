@@ -25,16 +25,16 @@ namespace RabitaBank.Dashboard.Services
         }
 
 
-        public async Task<List<Post>> GetRabitaJuniorAsync()
+        public List<Post> GetRabitaJunior()
         {
             var collection = _database.GetCollection<Post>("rabita.junior");
-            return await collection.Find(_ => true).ToListAsync();
+            return  collection.Find(_ => true).ToList();
         }
 
-        public async Task<List<Post>> GetRabitaBankAsync()
+        public List<Post> GetRabitaBank()
         {
             var collection = _database.GetCollection<Post>("rabitabank");
-            return await collection.Find(_ => true).ToListAsync();
+            return  collection.Find(_ => true).ToList();
         }
 
     }

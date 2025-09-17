@@ -85,8 +85,55 @@ namespace DashboardRabitaBank.Controllers
 
             return View(posts);
         }
+        public IActionResult Junior()
+        {
+            // MongoDB-dən bütün postları çəkirik
+            var posts = _insightService.GetRabitaJunior();
 
+            // Bütün şərhləri götürürük, Analysis olanları filtrləyirik
+            var allComments = posts
+                .Where(p => p.Comments != null)   // Comments null deyil
+                .SelectMany(p => p.Comments)      // Bütün şərhləri bir listə toplayırıq
+                .Where(c => c.Analysis != null)   // Analysis olanları seçirik
+                .ToList();
 
+            // Sentiment üzrə qruplaşdırırıq və sayını alırıq
+            var sentiments = allComments
+                .GroupBy(c => c.Analysis.Sentiment?.ToLower() ?? "other")
+                .Select(g => new
+                {
+                    Sentiment = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
 
-    }
+            // ViewBag vasitəsilə view-a göndəririk
+            ViewBag.SentimentStats = sentiments;
+
+            // Postları view-a göndəririk
+            return View(posts);
+        }
+        public IActionResult RabitaBank()
+        {
+            // MongoDB-dən bütün postları götürürük
+            var posts = _insightService.GetRabitaBank() ?? new List<Post>();
+
+            // Bütün şərhləri toplamaq və sentiment statistikasını çıxarmaq
+            var allComments = posts
+                .Where(p => p.Comments != null)
+                .SelectMany(p => p.Comments)
+                .Where(c => c.Analysis != null)
+                .ToList();
+
+            var sentiments = allComments
+                .GroupBy(c => c.Analysis.Sentiment?.ToLower() ?? "other")
+                .Select(g => new { Sentiment = g.Key, Count = g.Count() })
+                .ToList();
+
+            ViewBag.SentimentStats = sentiments;
+
+            return View(posts);
+        }
+
+}
 }
