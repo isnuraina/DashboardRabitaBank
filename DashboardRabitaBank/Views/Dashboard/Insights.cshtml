@@ -24,6 +24,7 @@
         @ViewData["Title"]
     </h2>
 
+
     <!-- Ümumi Sentiment Chart -->
     <div class="card shadow p-3 mb-5 bg-white rounded">
         <div class="card-body text-center">
@@ -35,12 +36,13 @@
             </div>
         </div>
     </div>
+    <h1>Comments</h1>
 
     @foreach (var post in Model)
     {
         <div class="card shadow p-3 mb-5 bg-white rounded">
             <div class="card-body">
-                <h4>@post.PostInfo?.Caption</h4>
+                <h6>@post.PostInfo?.Caption</h6>
                 <p><strong>Owner:</strong> @post.PostInfo?.OwnerUsername</p>
                 <p><strong>Likes:</strong> @post.PostInfo?.LikesCount</p>
                 <p><strong>Timestamp:</strong> @(post.PostInfo?.Timestamp.ToString("yyyy-MM-dd HH:mm"))</p>

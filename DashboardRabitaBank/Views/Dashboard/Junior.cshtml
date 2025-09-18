@@ -37,11 +37,13 @@
     </div>
 
     <!-- Hər bir postu göstəririk -->
+    <h1>Comments</h1>
+
     @foreach (var post in Model)
     {
         <div class="card shadow p-3 mb-5 bg-white rounded">
             <div class="card-body">
-                <h4>@post.PostInfo?.Caption</h4>
+                <h6>@post.PostInfo?.Caption</h6>
                 <p><strong>Owner:</strong> @post.PostInfo?.OwnerUsername</p>
                 <p><strong>Likes:</strong> @post.PostInfo?.LikesCount</p>
                 <p><strong>Timestamp:</strong> @(post.PostInfo?.Timestamp.ToString("yyyy-MM-dd HH:mm"))</p>
@@ -69,9 +71,11 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(comment.CommentatorProfilePicUrl))
                                     {
+                                       
                                         <img src="@comment.CommentatorProfilePicUrl"
                                              alt="Profile Pic"
-                                             style="width:40px;height:40px;border-radius:50%;" />
+                                             style="width:40px;height:40px;border-radius:50%;cursor:pointer;"
+                                             onclick="window.open('https://www.instagram.com/p/DNF7bh-NWY_', '_blank')" />
                                     }
                                 </td>
                                 <td>@comment.CommentatorUserName</td>
