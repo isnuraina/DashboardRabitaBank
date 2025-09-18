@@ -21,6 +21,10 @@ namespace DashboardRabitaBank.Controllers
         {
             return View();
         }
+        public IActionResult Google()
+        {
+            return View();
+        }
         //public IActionResult Insights()
         //{
         //    var posts = _insightService.GetRabitaInsights();
@@ -134,6 +138,6 @@ namespace DashboardRabitaBank.Controllers
 
             return View(posts);
         }
-
-}
+       
+    }
 }

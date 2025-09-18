@@ -1,9 +1,15 @@
-﻿@model List<DashboardRabitaBank.Models.Post>
+﻿
+@{
+    ViewData["Title"] = "GoogleRabitaBankCorporativ";
+}
+
+<h1>GoogleRabitaBankCorporativ</h1>
+
+@model List<DashboardRabitaBank.Models.Post>
 
 @{
-    ViewData["Title"] = "Instagram Insights";
+    ViewData["Title"] = "Google Rabitə Bank Corpprativ";
 
-    // Ümumi sentiment statistikası bütün postların şərhlərindən
     var allComments = Model
         .Where(p => p.Comments != null)
         .SelectMany(p => p.Comments)
@@ -20,25 +26,21 @@
 }
 
 <div class="container mt-4">
-    <h2 class="text-center" style="padding-top: 80px; margin-bottom: 40px; color: #28a745; font-weight: 600;">
-        @ViewData["Title"]
-    </h2>
+    <h2 class="mb-4 text-center">@ViewData["Title"]</h2>
 
     <!-- Ümumi Sentiment Chart -->
     <div class="card shadow p-3 mb-5 bg-white rounded">
         <div class="card-body text-center">
-            <h4 class="card-title mb-4">Ümumi Şərh Statistikası</h4>
-
-            <!-- Chart mərkəzləşdirilmiş və ölçüsü kiçildilmiş -->
+            <h4 class="card-title mb-4">Ümumi Rəy Statistikası</h4>
             <div style="display:flex; justify-content:center; align-items:center;">
-                <canvas id="overallSentimentChart" style="max-width:250px; max-height:250px;"></canvas>
+                <canvas id="overallSentimentChart" style="max-width:300px; max-height:300px;"></canvas>
             </div>
         </div>
     </div>
 
     @foreach (var post in Model)
     {
-        <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card shadow p-3 mb-4 bg-white rounded">
             <div class="card-body">
                 <h4>@post.PostInfo?.Caption</h4>
                 <p><strong>Owner:</strong> @post.PostInfo?.OwnerUsername</p>
@@ -47,17 +49,17 @@
 
                 @if (!string.IsNullOrEmpty(post.PostInfo?.DisplayUrl))
                 {
-                    <img src="@post.PostInfo.DisplayUrl" alt="Post Image" style="width:300px;height:auto;" class="mb-3" />
+                    <img src="@post.PostInfo.DisplayUrl" alt="Post Image"
+                         style="width:300px;height:auto;" class="mb-3 rounded shadow" />
                 }
 
-                <!-- Comments Table -->
-                <h5 class="mt-3">Şərhlər</h5>
+                <h5 class="mt-3">Rəylər</h5>
                 <table class="table table-bordered table-hover">
                     <thead class="thead-light">
                         <tr>
-                            <th>Profile</th>
-                            <th>Username</th>
-                            <th>Comment</th>
+                            <th>Profil</th>
+                            <th>İstifadəçi</th>
+                            <th>Şərh</th>
                             <th>Sentiment</th>
                         </tr>
                     </thead>
@@ -70,8 +72,7 @@
                                     {
                                         <img src="@comment.CommentatorProfilePicUrl"
                                              alt="Profile Pic"
-                                             style="width:40px;height:40px;border-radius:50%;cursor:pointer;"
-                                             onclick="window.open('https://www.instagram.com/p/DNF7bh-NWY_', '_blank')" />
+                                             style="width:40px;height:40px;border-radius:50%;" />
                                     }
                                 </td>
                                 <td>@comment.CommentatorUserName</td>
@@ -95,7 +96,7 @@
             data: {
                 labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(labels)),
                 datasets: [{
-                    label: 'Ümumi Şərh Statistikası',
+                    label: 'Ümumi Rəy Statistikası',
                     data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(data)),
                     backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#6c757d'],
                     borderWidth: 1

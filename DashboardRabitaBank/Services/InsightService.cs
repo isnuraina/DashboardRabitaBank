@@ -36,6 +36,21 @@ namespace RabitaBank.Dashboard.Services
             var collection = _database.GetCollection<Post>("rabitabank");
             return  collection.Find(_ => true).ToList();
         }
+       
+        public List<GoogleReview> GetGoogleRabitaBank()
+        {
+            var collection = _database.GetCollection<GoogleReview>("app_db.google_com.rabitabank");
+            return collection.Find(_ => true).ToList();
+        }
+
+        public List<GoogleReview> GetGoogleRabitaJunior()
+        {
+            var collection = _database.GetCollection<GoogleReview>("app_db.google_com.rabitajunior");
+            return collection.Find(_ => true).ToList();
+        }
+
+
+
 
     }
 }

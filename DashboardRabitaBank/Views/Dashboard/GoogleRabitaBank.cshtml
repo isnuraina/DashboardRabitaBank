@@ -1,0 +1,87 @@
+﻿@model List<DashboardRabitaBank.Models.GoogleReview>
+
+@{
+    ViewData["Title"] = "Google Rabitəbank Reviews";
+
+    var sentimentStats = Model
+        .Where(r => r.Analysis != null)
+        .GroupBy(r => r.Analysis.Sentiment ?? "Other")
+        .Select(g => new { Sentiment = g.Key, Count = g.Count() })
+        .ToList();
+
+    var labels = sentimentStats.Select(s => s.Sentiment).ToList();
+    var data = sentimentStats.Select(s => s.Count).ToList();
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">@ViewData["Title"]</h2>
+
+    <!-- Ümumi Sentiment Chart -->
+    <div class="card shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body text-center">
+            <h4 class="card-title mb-4">Ümumi Rəy Statistikası</h4>
+            <div style="display:flex; justify-content:center; align-items:center;">
+                <canvas id="overallSentimentChart" style="max-width:300px; max-height:300px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    @foreach (var review in Model)
+    {
+        <div class="card shadow p-3 mb-4 bg-white rounded">
+            <div class="d-flex align-items-center mb-3">
+                <img src="@review.UserImage" alt="User Pic"
+                     style="width:50px;height:50px;border-radius:50%;" />
+                <div class="ms-3">
+                    <h5 class="mb-1">@review.UserName</h5>
+                    <small class="text-muted">
+                        ⭐ @review.Score | @review..ToString("yyyy-MM-dd")
+                    </small>
+                </div>
+            </div>
+
+            <p>@review.Content</p>
+
+            @if (review.Analysis != null)
+            {
+                <div>
+                    <span class="badge bg-info">Sentiment: @review.Analysis.Sentiment</span>
+                    <span class="badge bg-secondary">Purpose: @review.Analysis.Purpose</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('overallSentimentChart').getContext('2d');
+        var overallChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(labels)),
+                datasets: [{
+                    label: 'Ümumi Rəy Statistikası',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(data)),
+                    backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#6c757d'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
