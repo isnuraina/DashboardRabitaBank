@@ -18,10 +18,7 @@ namespace RabitaBank.Dashboard.Services
             _database = client.GetDatabase(mongoSettings.Value.DatabaseName);
         }
 
-        // =====================
-        // Instagram / Post Data
-        // =====================
-
+        // Instagram və digər datalar
         public List<Post> GetRabitaInsights()
         {
             var collection = _database.GetCollection<Post>("rabita.insights");
@@ -41,10 +38,10 @@ namespace RabitaBank.Dashboard.Services
         }
 
         // =====================
-        // Google Reviews
+        // GOOGLE REVIEW METHODS
         // =====================
 
-        // RabitaBank Google Reviews (general)
+        // RabitaBank Google Reviews
         public List<GoogleReview> GetGoogleRabitaBank()
         {
             var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank");
@@ -64,5 +61,19 @@ namespace RabitaBank.Dashboard.Services
             var collection = _database.GetCollection<GoogleReview>("google_com.rabitajunior");
             return collection.Find(_ => true).ToList();
         }
+
+       
+        public List<GoogleReview> GetRabitaJuniorGoogleReviews()
+        {
+            var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank");
+            return collection.Find(_ => true).ToList();
+        }
+        public List<GoogleReview> GetRabitaBankGoogleReviews()
+        {
+            var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank.corporate");
+            return collection.Find(_ => true).ToList();
+        }
+
+
     }
 }
