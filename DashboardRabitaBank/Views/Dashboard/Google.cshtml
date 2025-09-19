@@ -1,25 +1,54 @@
-﻿@{
-    ViewData["Title"] = "Google Data Sources";
-}
+﻿@model List<DashboardRabitaBank.Models.GoogleReview>
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Google Data Sources</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-4">
-            <a  asp-controller="dashboard" asp-action="GoogleRabitaBank" class="card shadow-lg text-decoration-none">
-                <div class="card-body text-center">
-                    <h3 class="card-title">Rabitəbank</h3>
-                    <p class="text-muted">Google rəyləri və şərhləri</p>
-                </div>
-            </a>
+<div class="container mt-4">
+    <h2 class="mb-4 text-center text-success">RabitaBank Google Reviews</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            Heç bir review tapılmadı.
         </div>
-        <div class="col-md-4">
-            <a  asp-controller="dashboard" asp-action="GoogleRabitaBankCorporativ" class="card shadow-lg text-decoration-none">
-                <div class="card-body text-center">
-                    <h3 class="card-title">Rabitə Bank Corporativ</h3>
-                    <p class="text-muted">Google rəyləri və şərhləri</p>
+    }
+    else
+    {
+        @foreach (var review in Model)
+        {
+            <div class="card shadow p-3 mb-4 border-0 rounded-3">
+                <div class="d-flex align-items-center mb-3">
+                    <img src="@review.UserImage"
+                         class="rounded-circle border"
+                         style="width:60px; height:60px; object-fit:cover;" />
+                    <div class="ms-3">
+                        <h5 class="mb-1">@review.UserName</h5>
+                        <div class="text-warning">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= review.Score)
+                                {
+                                    <i class="bi bi-star-fill"></i>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-star"></i>
+                                }
+                            }
+                        </div>
+                        <small class="text-muted">@review.At.ToString("yyyy-MM-dd")</small>
+                    </div>
                 </div>
-            </a>
-        </div>
-    </div>
+
+                <p class="fs-6">@review.Content</p>
+
+                @if (review.Analysis != null)
+                {
+                    <div class="mt-2">
+                        <span class="badge bg-@(review.Analysis.Sentiment == "positive" ? "success" : review.Analysis.Sentiment == "negative" ? "danger" : "secondary")">
+                            @review.Analysis.Sentiment
+                        </span>
+                        <span class="badge bg-info">@review.Analysis.Purpose</span>
+                    </div>
+                }
+            </div>
+        }
+    }
 </div>

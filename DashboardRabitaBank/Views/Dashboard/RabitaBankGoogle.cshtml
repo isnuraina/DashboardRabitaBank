@@ -1,0 +1,35 @@
+﻿@model List<DashboardRabitaBank.Models.GoogleReview>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color:#2e7d32;">RabitaBank Corporate Google Reviews</h2>
+
+    <table class="table table-striped table-hover shadow-sm rounded">
+        <thead class="table-success">
+            <tr>
+                <th>User Image</th>
+                <th>User Name</th>
+                <th>Review</th>
+                <th>Score</th>
+                <th>Sentiment</th>
+                <th>Purpose</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@review.UserImage" style="width:50px;height:50px;border-radius:50%;" />
+                    </td>
+                    <td>@review.UserName</td>
+                    <td>@review.Content</td>
+                    <td>@review.Score</td>
+                    <td>@review.Analysis?.Sentiment</td>
+                    <td>@review.Analysis?.Purpose</td>
+                    <td>@review.At.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
