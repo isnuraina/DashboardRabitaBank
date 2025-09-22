@@ -99,6 +99,8 @@
             position: relative;
             overflow: hidden;
             margin: 0 4px;
+            text-decoration: none;
+            display: inline-block;
         }
 
             .nav-link::before {
@@ -115,17 +117,14 @@
                 z-index: -1;
             }
 
-            .nav-link:hover::before {
-                opacity: 0.1;
+            .nav-link:hover {
+                color: white;
+                transform: translateY(-2px);
+                text-decoration: none;
             }
 
-            .nav-link.active {
-                color: white !important;
-                transform: translateY(-1px);
-            }
-
-                .nav-link.active::before {
-                    opacity: 1;
+                .nav-link:hover::before {
+                    opacity: 0.9;
                 }
 
         .reviews-container {
@@ -379,215 +378,32 @@
 
     <div class="container main-container">
         <div class="page-header">
-            <h1 class="page-title">Rabita Reviews</h1>
+            <h1 class="page-title">Rabita App Reviews</h1>
             <p class="page-subtitle">Müştəri rəyləri və təhlilləri</p>
         </div>
 
         <div class="nav-tabs-container">
             <ul class="nav nav-tabs" id="reviewsTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="bank-tab" data-bs-toggle="tab" data-bs-target="#bank" type="button" role="tab">
-                        <i class="fas fa-building me-2"></i>
+                    <a asp-controller="AppReview" asp-action="RabitaBankBusiness" class="nav-link">
+                        <i class="fas fa-briefcase me-2"></i>
                         RabitaBank App Business
-                    </button>
+                    </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="junior-tab" data-bs-toggle="tab" data-bs-target="#junior" type="button" role="tab">
-                        <i class="fas fa-university me-2"></i>
+                    <a asp-controller="AppReview" asp-action="RabitaBankMobile" class="nav-link">
+                        <i class="fas fa-mobile-alt me-2"></i>
                         Rabita Bank Mobile
-                    </button>
+                    </a>
                 </li>
             </ul>
-        </div>
-
-        <div class="tab-content" id="reviewsTabContent">
-            <!-- RabitaBank Corporate Tab -->
-            <div class="tab-pane fade show active" id="bank" role="tabpanel">
-                <div class="reviews-container">
-                    <!-- Sample Review 1 -->
-                    <div class="review-card">
-                        <div class="user-info">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face"
-                                 class="user-avatar" alt="User Avatar">
-                            <div class="user-details">
-                                <h5>Əli Məmmədov</h5>
-                                <div class="user-meta">
-                                    <span class="rating-stars">⭐⭐⭐⭐⭐</span>
-                                    <span>5.0</span>
-                                    <span>•</span>
-                                    <span>2024-09-15</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="review-content">
-                            RabitaBank Corporate xidmətləri ilə çox məmnunam. Onlayn platforması çox rahat və istifadəsi asandır.
-                            Müştəri xidmətləri komandası həmişə köməkçi olur və problemləri tez həll edir.
-                        </p>
-                        <div class="analysis-badges">
-                            <span class="badge badge-modern badge-sentiment">
-                                <i class="fas fa-heart me-1"></i>Positive
-                            </span>
-                            <span class="badge badge-modern badge-purpose">
-                                <i class="fas fa-target me-1"></i>Service Review
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Sample Review 2 -->
-                    <div class="review-card">
-                        <div class="user-info">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=64&h=64&fit=crop&crop=face"
-                                 class="user-avatar" alt="User Avatar">
-                            <div class="user-details">
-                                <h5>Nigar Hüseynova</h5>
-                                <div class="user-meta">
-                                    <span class="rating-stars">⭐⭐⭐⭐</span>
-                                    <span>4.0</span>
-                                    <span>•</span>
-                                    <span>2024-09-12</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="review-content">
-                            Mobil aplikasiya çox funksionaldır. Bəzi kiçik texniki problemlər olur, amma ümumiyyətlə məmnunam.
-                            Komissiya haqqları da münasibdir.
-                        </p>
-                        <div class="analysis-badges">
-                            <span class="badge badge-modern badge-sentiment">
-                                <i class="fas fa-thumbs-up me-1"></i>Positive
-                            </span>
-                            <span class="badge badge-modern badge-purpose">
-                                <i class="fas fa-mobile-alt me-1"></i>App Review
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Sample Review 3 -->
-                    <div class="review-card">
-                        <div class="user-info">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face"
-                                 class="user-avatar" alt="User Avatar">
-                            <div class="user-details">
-                                <h5>Rəşad İbrahimov</h5>
-                                <div class="user-meta">
-                                    <span class="rating-stars">⭐⭐⭐</span>
-                                    <span>3.0</span>
-                                    <span>•</span>
-                                    <span>2024-09-10</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="review-content">
-                            Xidmət keyfiyyəti orta səviyyədədir. Bəzən gecikmələr olur, amma ümumiyyətlə istifadə oluna bilər.
-                            Daha çox təkmilləşdirmə lazımdır.
-                        </p>
-                        <div class="analysis-badges">
-                            <span class="badge badge-modern badge-sentiment">
-                                <i class="fas fa-meh me-1"></i>Neutral
-                            </span>
-                            <span class="badge badge-modern badge-purpose">
-                                <i class="fas fa-comment me-1"></i>General Feedback
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rabita Bank Tab -->
-            <div class="tab-pane fade" id="junior" role="tabpanel">
-                <div class="reviews-container">
-                    <!-- Sample Review for Rabita Bank -->
-                    <div class="review-card">
-                        <div class="user-info">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face"
-                                 class="user-avatar" alt="User Avatar">
-                            <div class="user-details">
-                                <h5>Səbinə Qasımova</h5>
-                                <div class="user-meta">
-                                    <span class="rating-stars">⭐⭐⭐⭐⭐</span>
-                                    <span>5.0</span>
-                                    <span>•</span>
-                                    <span>2024-09-18</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="review-content">
-                            Rabita Bank filialında çox yaxşı qarşılandım. Əməkdaşlar çox mehriban və peşəkardır.
-                            Bütün suallarımı cavabladılar və lazım olan köməkliyi göstərdilər.
-                        </p>
-                        <div class="analysis-badges">
-                            <span class="badge badge-modern badge-sentiment">
-                                <i class="fas fa-heart me-1"></i>Positive
-                            </span>
-                            <span class="badge badge-modern badge-purpose">
-                                <i class="fas fa-user-friends me-1"></i>Staff Review
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="review-card">
-                        <div class="user-info">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop&crop=face"
-                                 class="user-avatar" alt="User Avatar">
-                            <div class="user-details">
-                                <h5>Orxan Əliyev</h5>
-                                <div class="user-meta">
-                                    <span class="rating-stars">⭐⭐⭐⭐</span>
-                                    <span>4.0</span>
-                                    <span>•</span>
-                                    <span>2024-09-16</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="review-content">
-                            ATM şəbəkəsi geniş və rahatdır. Kartla ödənişlərdə problem yaşamıram.
-                            Sadəcə bəzi ATM-lərdə pul bitir və vaxtında doldurulmuyor.
-                        </p>
-                        <div class="analysis-badges">
-                            <span class="badge badge-modern badge-sentiment">
-                                <i class="fas fa-thumbs-up me-1"></i>Positive
-                            </span>
-                            <span class="badge badge-modern badge-purpose">
-                                <i class="fas fa-credit-card me-1"></i>ATM Review
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Smooth tab switching with animation
+        // Add smooth hover animations
         document.addEventListener('DOMContentLoaded', function() {
-            const triggerTabList = [].slice.call(document.querySelectorAll('#reviewsTab button'));
-            triggerTabList.forEach(function(triggerEl) {
-                const tabTrigger = new bootstrap.Tab(triggerEl);
-
-                triggerEl.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    tabTrigger.show();
-                });
-            });
-
-            // Add stagger animation to cards
-            function animateCards() {
-                const cards = document.querySelectorAll('.review-card');
-                cards.forEach((card, index) => {
-                    card.style.animationDelay = `${index * 0.1}s`;
-                    card.classList.add('animate__animated', 'animate__fadeInUp');
-                });
-            }
-
-            // Trigger animation on tab change
-            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
-                tab.addEventListener('shown.bs.tab', animateCards);
-            });
-
-            // Initial animation
-            animateCards();
-
             // Intersection Observer for card animations
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -598,11 +414,15 @@
                 });
             }, { threshold: 0.1 });
 
-            document.querySelectorAll('.review-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(card);
+            // Add hover effects to navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px) scale(1.05)';
+                });
+
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
             });
         });
     </script>

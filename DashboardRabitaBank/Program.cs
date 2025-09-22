@@ -1,4 +1,5 @@
-﻿using DashboardRabitaBank.Settings;
+﻿using DashboardRabitaBank.Services;
+using DashboardRabitaBank.Settings;
 using RabitaBank.Dashboard.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mong
 builder.Services.AddScoped<InsightService>();
 builder.Services.Configure<GoogleMongoSettings>(builder.Configuration.GetSection("GoogleMongoSettings"));
 builder.Services.AddScoped<GoogleReviewService>();
+builder.Services.Configure<AppMongoSettings>(builder.Configuration.GetSection("AppMongoSettings"));
+builder.Services.AddScoped<AppReviewService>();
+
 
 
 var app = builder.Build();
