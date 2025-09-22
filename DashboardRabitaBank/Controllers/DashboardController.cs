@@ -27,7 +27,10 @@ namespace DashboardRabitaBank.Controllers
         {
             return View();
         }
-
+        public IActionResult App()
+        {
+            return View();
+        }
         public IActionResult Insights()
         {
             var posts = _insightService.GetRabitaInsights() ?? new List<Post>();
