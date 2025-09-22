@@ -11,6 +11,9 @@ builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mong
 
 // Register InsightService
 builder.Services.AddScoped<InsightService>();
+builder.Services.Configure<GoogleMongoSettings>(builder.Configuration.GetSection("GoogleMongoSettings"));
+builder.Services.AddScoped<GoogleReviewService>();
+
 
 var app = builder.Build();
 

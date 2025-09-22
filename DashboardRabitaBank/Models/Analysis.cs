@@ -3,6 +3,8 @@ using MongoDB.Bson;
 
 namespace DashboardRabitaBank.Models
 {
+    [BsonIgnoreExtraElements]
+
     public class Analysis
     {
         [BsonElement("sentiment")]

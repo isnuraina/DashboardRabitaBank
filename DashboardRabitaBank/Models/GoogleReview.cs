@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace DashboardRabitaBank.Models
 {
-
+    [BsonIgnoreExtraElements]
     public class GoogleReview
     {
         [BsonId]
@@ -20,11 +20,11 @@ namespace DashboardRabitaBank.Models
         public string Content { get; set; }
 
         [BsonElement("score")]
-        [BsonRepresentation(BsonType.Int32)] // burası vacibdir
+        [BsonRepresentation(BsonType.Int32)]
         public int Score { get; set; }
 
         [BsonElement("at")]
-        [BsonDateTimeOptions(Kind = DateTimeKind.Local)] // burası vacibdir
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime At { get; set; }
 
         [BsonElement("analysis")]

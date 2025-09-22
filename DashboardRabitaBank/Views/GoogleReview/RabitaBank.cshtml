@@ -1,0 +1,41 @@
+﻿@model List<DashboardRabitaBank.Models.GoogleReview>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-8" style="color:#1b5e20;">RabitaBank Google Reviews</h2>
+
+    <table class="table table-striped table-hover shadow-sm rounded" style="width: 100%; table-layout: auto;">
+        <thead class="table-success">
+            <tr>
+                <th>User Image</th>
+                <th>User Name</th>
+                <th>Review</th>
+                <th>Score</th>
+                <th>Sentiment</th>
+                <th>Purpose</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                var sentimentColor = review.Analysis?.Sentiment?.ToLower() switch
+                {
+                    "positive" => "#66bb6a", // tünd yaşıl
+                    "negative" => "#b71c1c", // qırmızı
+                    "neutral" => "#fbc02d",  // sari
+                    _ => "#000000"           // default qara
+                };
+
+                <tr>
+                    <td><img src="@review.UserImage" style="width:50px;height:50px;border-radius:50%;" /></td>
+                    <td style="color:white">@review.UserName</td>
+                    <td style="color:white">@review.Content</td>
+                    <td style="color:white">@review.Score</td>
+                    <td style="color:@sentimentColor">@review.Analysis?.Sentiment</td>
+                    <td style="color:white">@review.Analysis?.Purpose</td>
+                    <td style="color:white">@review.At.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

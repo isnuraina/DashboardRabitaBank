@@ -109,7 +109,7 @@ namespace DashboardRabitaBank.Controllers
         // RabitaJunior Google Reviews
         public IActionResult RabitaJuniorGoogle()
         {
-            var reviews = _insightService.GetGoogleRabitaJunior() ?? new List<GoogleReview>();
+            var reviews = _insightService.GetGoogleRabitaJunior();
             return View(reviews);
         }
 

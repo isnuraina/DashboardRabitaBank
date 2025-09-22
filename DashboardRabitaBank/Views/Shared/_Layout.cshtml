@@ -77,7 +77,9 @@
             <div style="background:#003300; border-radius:25px; box-shadow:0 0 40px rgba(0,255,128,0.4); padding:2rem; transition: transform 0.3s, box-shadow 0.3s;" onmouseover="this.style.transform='translateY(-10px) scale(1.02)'; this.style.boxShadow='0 0 60px rgba(0,255,128,0.5)'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 0 40px rgba(0,255,128,0.4)'">
                 <h2 style="color:#00ff7f;">Welcome to Rabita Bank Dashboard</h2>
                 <p style="color:#a0ffa0;">Manage statistics, users and perform advanced operations with futuristic 3D interface.</p>
-                <button style="background:#28a745; color:#000; border:none; border-radius:20px; padding:12px 25px; font-weight:bold; cursor:pointer; box-shadow:0 0 20px #28a745; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 35px #00ff7f'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 0 20px #28a745'">Get Started</button>
+                <a asp-controller="dashboard" asp-action="index">
+                    <button style="background:#28a745; color:#000; border:none; border-radius:20px; padding:12px 25px; font-weight:bold; cursor:pointer; box-shadow:0 0 20px #28a745; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px) scale(1.05)'; this.style.boxShadow='0 0 35px #00ff7f'" onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 0 20px #28a745'">Get Started</button>
+                </a>
             </div>
 
             @RenderBody()

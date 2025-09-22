@@ -15,10 +15,17 @@ namespace RabitaBank.Dashboard.Services
                 throw new ArgumentNullException(nameof(mongoSettings.Value.ConnectionString));
 
             var client = new MongoClient(mongoSettings.Value.ConnectionString);
+
+            if (string.IsNullOrEmpty(mongoSettings.Value.DatabaseName))
+                throw new ArgumentNullException(nameof(mongoSettings.Value.DatabaseName));
+
             _database = client.GetDatabase(mongoSettings.Value.DatabaseName);
         }
 
+        // =====================
         // Instagram və digər datalar
+        // =====================
+
         public List<Post> GetRabitaInsights()
         {
             var collection = _database.GetCollection<Post>("rabita.insights");
@@ -41,39 +48,31 @@ namespace RabitaBank.Dashboard.Services
         // GOOGLE REVIEW METHODS
         // =====================
 
-        // RabitaBank Google Reviews
+        /// <summary>
+        /// RabitaBank Google Reviews
+        /// </summary>
         public List<GoogleReview> GetGoogleRabitaBank()
         {
             var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank");
             return collection.Find(_ => true).ToList();
         }
 
-        // RabitaBank Corporate Google Reviews
+        /// <summary>
+        /// RabitaBank Corporate Google Reviews
+        /// </summary>
         public List<GoogleReview> GetGoogleRabitaBankCorporate()
         {
             var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank.corporate");
             return collection.Find(_ => true).ToList();
         }
 
-        // RabitaJunior Google Reviews
+        /// <summary>
+        /// RabitaJunior Google Reviews
+        /// </summary>
         public List<GoogleReview> GetGoogleRabitaJunior()
         {
             var collection = _database.GetCollection<GoogleReview>("google_com.rabitajunior");
             return collection.Find(_ => true).ToList();
         }
-
-       
-        public List<GoogleReview> GetRabitaJuniorGoogleReviews()
-        {
-            var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank");
-            return collection.Find(_ => true).ToList();
-        }
-        public List<GoogleReview> GetRabitaBankGoogleReviews()
-        {
-            var collection = _database.GetCollection<GoogleReview>("google_com.rabitabank.corporate");
-            return collection.Find(_ => true).ToList();
-        }
-
-
     }
 }
