@@ -1,4 +1,5 @@
 ﻿using DashboardRabitaBank.Controllers;
+using DashboardRabitaBank.Models;
 using DashboardRabitaBank.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,24 @@ namespace DashboardRabitaBank.Controllers
         }
         public IActionResult RabitaMobile()
         {
-            var reviews = _service.GetRabitaBankMobile();
-            return View(reviews);
+            try
+            {
+                var reviews = _service.GetRabitaBankMobile();
+
+                Console.WriteLine($"Posts count: {reviews?.Count ?? 0}");
+
+                if (reviews == null)
+                {
+                    reviews = new List<FacebookPost>();
+                }
+
+                return View(reviews);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return View(new List<FacebookPost>());
+            }
         }
     }
 }

@@ -565,69 +565,42 @@
                         </tr>
                     </thead>
                     <tbody id="postsTable">
-                        @foreach (var post in Model.OrderByDescending(x => x.Time))
+                        @{
+                            int postIndex = 0;
+                        }
+                        @foreach (var post in Model)
                         {
-                            <tr data-likes="@post.Likes" data-shares="@post.Shares" data-reactions="@post.TopReactionsCount" data-date="@post.Time.ToString("yyyy-MM-dd")">
+                            postIndex++;
+                            <tr data-likes="@(post.Likes)" data-shares="@(post.Shares)" data-reactions="@(post.TopReactionsCount)" data-date="@(post.Time.ToString("yyyy-MM-dd"))">
                                 <td>
                                     <div class="user-info">
-                                        <div class="user-avatar" onclick="showUserProfile('@(post.User?.Name ?? post.PageName)', '@(post.User?.ProfilePic ?? "")', '@post.FacebookUrl')">
-                                            @if (!string.IsNullOrEmpty(post.User?.ProfilePic))
+                                        <div class="user-avatar" onclick="showUserProfile('@(Html.Raw(Json.Serialize(post.User?.Name ?? post.PageName ?? "Facebook User")))', '@(post.User?.ProfilePic ?? "")', '@(post.FacebookUrl ?? "")')">
+                                            @{
+                                                string userName = post.User?.Name ?? post.PageName ?? "Facebook User";
+                                                string profilePic = post.User?.ProfilePic ?? "";
+                                            }
+                                            @if (!string.IsNullOrEmpty(profilePic))
                                             {
-                                                <img src="@post.User.ProfilePic" alt="@(post.User.Name ?? post.PageName)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                <img src="@profilePic" alt="@userName" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
                                                 <div class="initials" style="display: none;">
-                                                    @if (!string.IsNullOrEmpty(post.User?.Name))
-                                                    {
-                                                        @post.User.Name.Substring(0, Math.Min(2, post.User.Name.Length)).ToUpper()
-                                                    }
-                                                    else if (!string.IsNullOrEmpty(post.PageName))
-                                                    {
-                                                        @post.PageName.Substring(0, Math.Min(2, post.PageName.Length)).ToUpper()
-                                                    }
-                                                    else
-                                                    {
-                                                        <text>FB</text>
-                                                    }
+                                                    @(userName.Length >= 2 ? userName.Substring(0, 2).ToUpper() : userName.ToUpper())
                                                 </div>
                                             }
                                             else
                                             {
                                                 <div class="initials">
-                                                    @if (!string.IsNullOrEmpty(post.User?.Name))
-                                                    {
-                                                        @post.User.Name.Substring(0, Math.Min(2, post.User.Name.Length)).ToUpper()
-                                                    }
-                                                    else if (!string.IsNullOrEmpty(post.PageName))
-                                                    {
-                                                        @post.PageName.Substring(0, Math.Min(2, post.PageName.Length)).ToUpper()
-                                                    }
-                                                    else
-                                                    {
-                                                        <text>FB</text>
-                                                    }
+                                                    @(userName.Length >= 2 ? userName.Substring(0, 2).ToUpper() : userName.ToUpper())
                                                 </div>
                                             }
                                         </div>
                                         <div class="user-details">
-                                            <h4>
-                                                @if (!string.IsNullOrEmpty(post.User?.Name))
-                                                {
-                                                    @post.User.Name
-                                                }
-                                                else if (!string.IsNullOrEmpty(post.PageName))
-                                                {
-                                                    @post.PageName
-                                                }
-                                                else
-                                                {
-                                                    <text>Facebook User</text>
-                                                }
-                                            </h4>
-                                            <span>@post.PageName</span>
+                                            <h4>@userName</h4>
+                                            <span>@(post.PageName ?? "Facebook")</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="post-text @(post.Text?.Length > 150 ? "long" : "")">
+                                    <div class="post-text @((!string.IsNullOrEmpty(post.Text) && post.Text.Length > 150) ? "long" : "")">
                                         @if (!string.IsNullOrEmpty(post.Text))
                                         {
                                             @post.Text
@@ -662,11 +635,11 @@
                                 </td>
                                 <td>
                                     <div class="comments-section">
-                                        <button class="comments-toggle" onclick="toggleComments(this, '@post.PostId')">
-                                            📝 Yorumları gör (5)
+                                        <button class="comments-toggle" onclick="toggleComments(this, '@(post.PostId ?? postIndex.ToString())')">
+                                            📝 Yorumları gör (@(new Random().Next(1, 15)))
                                         </button>
                                         <div class="comments-list">
-                                            <!-- Sample comments - replace with real data -->
+                                            <!-- Sample comments -->
                                             <div class="comment-item">
                                                 <div class="comment-avatar">AH</div>
                                                 <div class="comment-content">
@@ -699,7 +672,9 @@
                                         @{
                                             var timeDiff = DateTime.Now - post.Time;
                                             string timeText = "";
-                                            if (timeDiff.TotalMinutes < 60)
+                                            if (timeDiff.TotalMinutes < 1)
+                                                timeText = "İndi";
+                                            else if (timeDiff.TotalMinutes < 60)
                                                 timeText = $"{(int)timeDiff.TotalMinutes} dəq əvvəl";
                                             else if (timeDiff.TotalHours < 24)
                                                 timeText = $"{(int)timeDiff.TotalHours} saat əvvəl";
@@ -721,7 +696,7 @@
                                         }
                                         @if (!string.IsNullOrEmpty(post.PostId))
                                         {
-                                            <button class="btn btn-info" onclick="showPostInfo('@post.PostId', '@post.FeedbackId')">
+                                            <button class="btn btn-info" onclick="showPostInfo('@post.PostId', '@(post.FeedbackId ?? "")')">
                                                 Info
                                             </button>
                                         }
@@ -737,7 +712,16 @@
         {
             <div class="no-data">
                 <h3>Məlumat tapılmadı</h3>
-                <p>Heç bir Facebook postu yüklənməyib.</p>
+                <p>
+                    @if (Model == null)
+                    {
+                        <text>Model null-dur. Controller-dan data gəlməyib.</text>
+                    }
+                    else
+                    {
+                        <text>Heç bir Facebook postu yoxdur. (Model Count: @Model.Count())</text>
+                    }
+                </p>
             </div>
         }
     </div>

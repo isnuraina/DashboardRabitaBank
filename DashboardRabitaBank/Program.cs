@@ -13,14 +13,22 @@ builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mong
 // Register InsightService
 builder.Services.AddScoped<InsightService>();
 
+
 builder.Services.Configure<GoogleMongoSettings>(builder.Configuration.GetSection("GoogleMongoSettings"));
 builder.Services.AddScoped<GoogleReviewService>();
+
 
 builder.Services.Configure<AppMongoSettings>(builder.Configuration.GetSection("AppMongoSettings"));
 builder.Services.AddScoped<AppReviewService>();
 
+
 builder.Services.Configure<FacebookMongoSettings>(builder.Configuration.GetSection("FacebookMongoSettings"));
 builder.Services.AddScoped<FacebookService>();
+
+
+builder.Services.Configure<LinkedinMongoSettings>(builder.Configuration.GetSection("LinkedinMongoSettings"));
+builder.Services.AddScoped<LinkedinService>();
+
 
 
 

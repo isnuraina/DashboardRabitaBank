@@ -20,9 +20,21 @@ namespace DashboardRabitaBank.Services
 
         public List<FacebookPost> GetRabitaBankMobile()
         {
-            var collection = _database.GetCollection<FacebookPost>(_settings.RabitaBankCollectionFacebookName);
-            return collection.Find(_ => true).ToList();
-        }
+            try
+            {
+                var collection = _database.GetCollection<FacebookPost>(_settings.RabitaBankCollectionFacebookName);
+                var posts = collection.Find(_ => true).ToList();
 
+                // Debug üçün
+                Console.WriteLine($"MongoDB-dən gələn post sayı: {posts.Count}");
+
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"MongoDB Error: {ex.Message}");
+                return new List<FacebookPost>();
+            }
+        }
     }
 }
