@@ -1,0 +1,902 @@
+﻿@model List<DashboardRabitaBank.Models.FacebookPost>
+@{
+    ViewData["Title"] = "Facebook Yorumları - Rabita Bank Mobile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        // Post məlumatları göstər
+        function showPostInfo(postId, feedbackId) {
+            alert(`Post ID: ${postId}\nFeedback ID: ${feedbackId}`);
+            // Burada modal və ya detail page açıla bilər
+        }
+
+        // Real yorumları yükləmək üçün (API var olarsa)
+        function loadComments(postId, container) {
+            // AJAX call example: // fetch(`/api/facebook/comments/${postId}`) // .then(response => response.json()) // .then(comments => {
+                    //         container.innerHTML = comments.map(comment => `
+                    //             <div class="comment-item">
+                    //                 <div class="comment-avatar">${comment.author.substring(0,2)}</div>
+                    //                 <div class="comment-content">
+                    //                     <div class="comment-author">${comment.author}</div>
+                    //                     <div class="comment-text">${comment.text}</div>
+                    //                     <div class="comment-meta">${comment.timeAgo} · ${comment.likes} bəyənmə</div>
+                    //                 </div>
+                    //             </div>
+                    //         `).join('');
+                    //     });
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1877f2, #42a5f5);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+            .header h1 {
+                font-size: 28px;
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+
+            .header p {
+                opacity: 0.9;
+                font-size: 16px;
+            }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1877f2;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #65676b;
+        }
+
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+            .search-input:focus {
+                border-color: #1877f2;
+            }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            max-height: 70vh;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th {
+            background-color: #1877f2;
+            color: white;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+
+            tr:nth-child(even):hover {
+                background-color: #f0f2f5;
+            }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 200px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1877f2, #42a5f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .user-avatar:hover {
+                transform: scale(1.1);
+            }
+
+            .user-avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+
+            .user-avatar .initials {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+        .user-details h4 {
+            font-size: 14px;
+            color: #1c1e21;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+
+        .user-details span {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        .post-text {
+            max-width: 350px;
+            line-height: 1.5;
+            color: #1c1e21;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+            .post-text.long {
+                max-height: 100px;
+                overflow: hidden;
+                position: relative;
+            }
+
+                .post-text.long:after {
+                    content: "...";
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    background: white;
+                    padding-left: 20px;
+                }
+
+        .expand-btn {
+            color: #1877f2;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .metrics {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .metric-icon {
+            font-size: 16px;
+        }
+
+        .metric-count {
+            font-weight: 600;
+            color: #1877f2;
+        }
+
+        .post-date {
+            color: #65676b;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-link {
+            background: #e7f3ff;
+            color: #1877f2;
+        }
+
+            .btn-link:hover {
+                background: #d0e7ff;
+                color: #1877f2;
+                text-decoration: none;
+            }
+
+        .btn-info {
+            background: #f0f2f5;
+            color: #65676b;
+        }
+
+            .btn-info:hover {
+                background: #e4e6ea;
+            }
+
+        .comments-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .comments-toggle {
+            background: #e4e6ea;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #65676b;
+            border: none;
+            width: 100%;
+            text-align: left;
+            transition: background 0.2s;
+        }
+
+            .comments-toggle:hover {
+                background: #d8dadf;
+            }
+
+            .comments-toggle.active {
+                background: #1877f2;
+                color: white;
+            }
+
+        .comments-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+            .comments-list.expanded {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+        .comment-item {
+            padding: 10px;
+            border-bottom: 1px solid #e4e6ea;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+            .comment-item:last-child {
+                border-bottom: none;
+            }
+
+        .comment-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #42a5f5, #66bb6a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-author {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1c1e21;
+            margin-bottom: 2px;
+        }
+
+        .comment-text {
+            font-size: 12px;
+            color: #65676b;
+            line-height: 1.4;
+        }
+
+        .comment-meta {
+            font-size: 11px;
+            color: #8a8d91;
+            margin-top: 3px;
+        }
+
+        .profile-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .profile-modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .profile-close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #65676b;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            background: linear-gradient(135deg, #1877f2, #42a5f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .profile-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+            .profile-info h3 {
+                color: #1877f2;
+                margin-bottom: 10px;
+            }
+
+            .profile-info p {
+                margin: 5px 0;
+                font-size: 14px;
+            }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #1877f2;
+        }
+
+        @@media (max-width: 768px) {
+            .controls
+
+        {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-input {
+            min-width: auto;
+        }
+
+        th, td {
+            padding: 10px 8px;
+            font-size: 12px;
+        }
+
+        .user-info {
+            min-width: 150px;
+        }
+
+        .post-text {
+            max-width: 250px;
+        }
+
+        .stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Facebook Postları</h1>
+            <p>Rabita Bank Mobile Uygulaması</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">@Model.Count()</div>
+                <div class="stat-label">Toplam Post</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">@Model.Sum(x => x.Likes)</div>
+                <div class="stat-label">Toplam Bəyənmə</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">@Model.Sum(x => x.Shares)</div>
+                <div class="stat-label">Toplam Paylaşım</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">@Model.Sum(x => x.TopReactionsCount)</div>
+                <div class="stat-label">Toplam Reaksiya</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" class="search-input" placeholder="Postlarda ara..." id="searchInput">
+            <select class="filter-select" id="sortFilter">
+                <option value="date">Tarixə görə</option>
+                <option value="likes">Bəyənməyə görə</option>
+                <option value="shares">Paylaşıma görə</option>
+                <option value="reactions">Reaksiyaya görə</option>
+            </select>
+        </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>İstifadəçi</th>
+                            <th>Post Mətni</th>
+                            <th>Bəyənmələr</th>
+                            <th>Paylaşımlar</th>
+                            <th>Reaksiyalar</th>
+                            <th>Yorumlar</th>
+                            <th>Tarix</th>
+                            <th>Əməliyyatlar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postsTable">
+                        @foreach (var post in Model.OrderByDescending(x => x.Time))
+                        {
+                            <tr data-likes="@post.Likes" data-shares="@post.Shares" data-reactions="@post.TopReactionsCount" data-date="@post.Time.ToString("yyyy-MM-dd")">
+                                <td>
+                                    <div class="user-info">
+                                        <div class="user-avatar" onclick="showUserProfile('@(post.User?.Name ?? post.PageName)', '@(post.User?.ProfilePic ?? "")', '@post.FacebookUrl')">
+                                            @if (!string.IsNullOrEmpty(post.User?.ProfilePic))
+                                            {
+                                                <img src="@post.User.ProfilePic" alt="@(post.User.Name ?? post.PageName)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                <div class="initials" style="display: none;">
+                                                    @if (!string.IsNullOrEmpty(post.User?.Name))
+                                                    {
+                                                        @post.User.Name.Substring(0, Math.Min(2, post.User.Name.Length)).ToUpper()
+                                                    }
+                                                    else if (!string.IsNullOrEmpty(post.PageName))
+                                                    {
+                                                        @post.PageName.Substring(0, Math.Min(2, post.PageName.Length)).ToUpper()
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>FB</text>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="initials">
+                                                    @if (!string.IsNullOrEmpty(post.User?.Name))
+                                                    {
+                                                        @post.User.Name.Substring(0, Math.Min(2, post.User.Name.Length)).ToUpper()
+                                                    }
+                                                    else if (!string.IsNullOrEmpty(post.PageName))
+                                                    {
+                                                        @post.PageName.Substring(0, Math.Min(2, post.PageName.Length)).ToUpper()
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>FB</text>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="user-details">
+                                            <h4>
+                                                @if (!string.IsNullOrEmpty(post.User?.Name))
+                                                {
+                                                    @post.User.Name
+                                                }
+                                                else if (!string.IsNullOrEmpty(post.PageName))
+                                                {
+                                                    @post.PageName
+                                                }
+                                                else
+                                                {
+                                                    <text>Facebook User</text>
+                                                }
+                                            </h4>
+                                            <span>@post.PageName</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="post-text @(post.Text?.Length > 150 ? "long" : "")">
+                                        @if (!string.IsNullOrEmpty(post.Text))
+                                        {
+                                            @post.Text
+                                        }
+                                        else
+                                        {
+                                            <em style="color: #999;">Mətn yoxdur</em>
+                                        }
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(post.Text) && post.Text.Length > 150)
+                                    {
+                                        <div class="expand-btn" onclick="toggleText(this)">Daha çox göstər</div>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="metrics">
+                                        <span class="metric-icon">👍</span>
+                                        <span class="metric-count">@post.Likes.ToString("N0")</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metrics">
+                                        <span class="metric-icon">📤</span>
+                                        <span class="metric-count">@post.Shares.ToString("N0")</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="metrics">
+                                        <span class="metric-icon">😍</span>
+                                        <span class="metric-count">@post.TopReactionsCount.ToString("N0")</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="comments-section">
+                                        <button class="comments-toggle" onclick="toggleComments(this, '@post.PostId')">
+                                            📝 Yorumları gör (5)
+                                        </button>
+                                        <div class="comments-list">
+                                            <!-- Sample comments - replace with real data -->
+                                            <div class="comment-item">
+                                                <div class="comment-avatar">AH</div>
+                                                <div class="comment-content">
+                                                    <div class="comment-author">Aysel Həsənli</div>
+                                                    <div class="comment-text">Çox yaxşı xidmətdir! 👍</div>
+                                                    <div class="comment-meta">2 saat əvvəl · 12 bəyənmə</div>
+                                                </div>
+                                            </div>
+                                            <div class="comment-item">
+                                                <div class="comment-avatar">RN</div>
+                                                <div class="comment-content">
+                                                    <div class="comment-author">Rəşad Nəsirov</div>
+                                                    <div class="comment-text">Mən də razıyam, çox rahatdır</div>
+                                                    <div class="comment-meta">1 saat əvvəl · 8 bəyənmə</div>
+                                                </div>
+                                            </div>
+                                            <div class="comment-item">
+                                                <div class="comment-avatar">LM</div>
+                                                <div class="comment-content">
+                                                    <div class="comment-author">Leyla Məmmədova</div>
+                                                    <div class="comment-text">Təşəkkürlər Rabita Bank! ❤️</div>
+                                                    <div class="comment-meta">45 dəqiqə əvvəl · 15 bəyənmə</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="post-date" title="@post.Time.ToString("dd.MM.yyyy HH:mm")">
+                                        @{
+                                            var timeDiff = DateTime.Now - post.Time;
+                                            string timeText = "";
+                                            if (timeDiff.TotalMinutes < 60)
+                                                timeText = $"{(int)timeDiff.TotalMinutes} dəq əvvəl";
+                                            else if (timeDiff.TotalHours < 24)
+                                                timeText = $"{(int)timeDiff.TotalHours} saat əvvəl";
+                                            else if (timeDiff.TotalDays < 7)
+                                                timeText = $"{(int)timeDiff.TotalDays} gün əvvəl";
+                                            else
+                                                timeText = post.Time.ToString("dd.MM.yyyy");
+                                        }
+                                        @timeText
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="actions">
+                                        @if (!string.IsNullOrEmpty(post.FacebookUrl))
+                                        {
+                                            <a href="@post.FacebookUrl" target="_blank" class="btn btn-link">
+                                                Link
+                                            </a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(post.PostId))
+                                        {
+                                            <button class="btn btn-info" onclick="showPostInfo('@post.PostId', '@post.FeedbackId')">
+                                                Info
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="no-data">
+                <h3>Məlumat tapılmadı</h3>
+                <p>Heç bir Facebook postu yüklənməyib.</p>
+            </div>
+        }
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-modal-content">
+            <span class="profile-close" onclick="closeProfileModal()">&times;</span>
+            <div class="profile-header">
+                <div class="profile-avatar" id="modalAvatar"></div>
+                <h2 id="modalName"></h2>
+            </div>
+            <div class="profile-info">
+                <h3>İstifadəçi Məlumatları</h3>
+                <p><strong>Facebook Səhifəsi:</strong> <span id="modalPageName"></span></p>
+                <p><strong>Profil Linki:</strong> <a href="#" id="modalProfileLink" target="_blank">Facebook-da bax</a></p>
+                <p><strong>Son Aktivlik:</strong> <span id="modalLastActive"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Axtarış funksiyası
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#postsTable tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+
+        // Sıralama funksiyası
+        document.getElementById('sortFilter').addEventListener('change', function() {
+            const sortBy = this.value;
+            const tbody = document.getElementById('postsTable');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort((a, b) => {
+                let aValue, bValue;
+
+                switch(sortBy) {
+                    case 'likes':
+                        aValue = parseInt(a.dataset.likes) || 0;
+                        bValue = parseInt(b.dataset.likes) || 0;
+                        return bValue - aValue;
+                    case 'shares':
+                        aValue = parseInt(a.dataset.shares) || 0;
+                        bValue = parseInt(b.dataset.shares) || 0;
+                        return bValue - aValue;
+                    case 'reactions':
+                        aValue = parseInt(a.dataset.reactions) || 0;
+                        bValue = parseInt(b.dataset.reactions) || 0;
+                        return bValue - aValue;
+                    case 'date':
+                    default:
+                        aValue = new Date(a.dataset.date);
+                        bValue = new Date(b.dataset.date);
+                        return bValue - aValue;
+                }
+            });
+
+            // Sıralanmış sətirləri əlavə et
+            rows.forEach(row => tbody.appendChild(row));
+        });
+
+        // Mətn genişlətmə
+        function toggleText(element) {
+            const textDiv = element.previousElementSibling;
+            const isExpanded = textDiv.style.maxHeight === 'none';
+
+            if (isExpanded) {
+                textDiv.style.maxHeight = '100px';
+                textDiv.style.overflow = 'hidden';
+                element.textContent = 'Daha çox göstər';
+            } else {
+                textDiv.style.maxHeight = 'none';
+                textDiv.style.overflow = 'visible';
+                element.textContent = 'Az göstər';
+            }
+        }
+
+        // Yorumları aç/bağla
+        function toggleComments(button, postId) {
+            const commentsList = button.nextElementSibling;
+            const isExpanded = commentsList.classList.contains('expanded');
+
+            if (isExpanded) {
+                commentsList.classList.remove('expanded');
+                button.classList.remove('active');
+                button.innerHTML = '📝 Yorumları gör (5)';
+            } else {
+                // Əgər real API varsa, burada yorumları yüklə
+                // loadComments(postId, commentsList);
+                commentsList.classList.add('expanded');
+                button.classList.add('active');
+                button.innerHTML = '📝 Yorumları gizlə';
+            }
+        }
+
+        // İstifadəçi profilini göstər
+        function showUserProfile(userName, profilePicture, profileUrl) {
+            const modal = document.getElementById('profileModal');
+            const modalAvatar = document.getElementById('modalAvatar');
+            const modalName = document.getElementById('modalName');
+            const modalPageName = document.getElementById('modalPageName');
+            const modalProfileLink = document.getElementById('modalProfileLink');
+            const modalLastActive = document.getElementById('modalLastActive');
+
+            // Avatar təyin et
+            if (profilePicture && profilePicture.trim() !== '') {
+                modalAvatar.innerHTML = `<img src="${profilePicture}" alt="${userName}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+            } else {
+                const initials = userName ? userName.substring(0, 2).toUpperCase() : 'FB';
+                modalAvatar.innerHTML = initials;
+            }
+
+            // Məlumatları doldur
+            modalName.textContent = userName || 'Facebook İstifadəçisi';
+            modalPageName.textContent = userName || 'Məlumat yoxdur';
+            modalProfileLink.href = profileUrl || '#';
+            modalLastActive.textContent = 'Bir neçə dəqiqə əvvəl';
+
+            modal.style.display = 'block';
+        }
+
+        // Profil modal-ını bağla
+        function closeProfileModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        // Modal kənarda klik edildikdə bağla
+        window.onclick = function(event) {
+            const modal = document.getElementById('profileModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Sayfa yükləndiyi zaman statistikaları animasiya et
+        document.addEventListener('DOMContentLoaded', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const finalValue = parseInt(stat.textContent);
+                let currentValue = 0;
+                const increment = Math.ceil(finalValue / 50);
+
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        stat.textContent = finalValue.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = currentValue.toLocaleString();
+                    }
+                }, 20);
+            });
+        });
+    </script>
+</body>
+</html>

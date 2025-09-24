@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DashboardRabitaBank.Models
 {
@@ -9,6 +10,8 @@ namespace DashboardRabitaBank.Models
         public bool IsBusinessPageActive { get; set; }
 
         [BsonElement("id")]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+
     }
 }

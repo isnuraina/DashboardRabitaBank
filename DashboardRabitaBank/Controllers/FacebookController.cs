@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DashboardRabitaBank.Controllers;
+using DashboardRabitaBank.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DashboardRabitaBank.Controllers
 {
     public class FacebookController : Controller
     {
-        public IActionResult Index()
+        private readonly FacebookService _service;
+        public FacebookController(FacebookService service)
         {
-            return View();
+            _service = service ?? throw new ArgumentNullException(nameof(service));
+        }
+        public IActionResult RabitaMobile()
+        {
+            var reviews = _service.GetRabitaBankMobile();
+            return View(reviews);
         }
     }
 }
+
+

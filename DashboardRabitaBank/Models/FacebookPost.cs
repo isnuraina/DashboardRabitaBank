@@ -7,7 +7,7 @@ namespace DashboardRabitaBank.Models
     public class FacebookPost
     {
         [BsonId]
-        [BsonRepresentation(BsonType.String)]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         [BsonElement("_scrapedAt")]

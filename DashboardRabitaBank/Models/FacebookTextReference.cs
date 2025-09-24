@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DashboardRabitaBank.Models
 {
@@ -15,6 +16,8 @@ namespace DashboardRabitaBank.Models
         public string MobileUrl { get; set; }
 
         [BsonElement("id")]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string RefId { get; set; }
+
     }
 }
