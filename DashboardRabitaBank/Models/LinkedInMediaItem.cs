@@ -16,5 +16,7 @@ namespace DashboardRabitaBank.Models
         [BsonElement("height")]
         [BsonRepresentation(BsonType.Int32)]
         public int Height { get; set; }
+        [BsonElement("type")]
+        public string Type { get; set; }
     }
 }

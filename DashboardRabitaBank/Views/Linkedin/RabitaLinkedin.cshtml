@@ -73,39 +73,38 @@
             filter: blur(1px);
         }
 
-            .bg-circle:nth-child(1) {
-                width: 200px;
-                height: 200px;
-                background: var(--gradient-secondary);
-                top: 10%;
-                left: 5%;
-                animation-delay: 0s;
-            }
+        .bg-circle:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            background: var(--gradient-secondary);
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
 
-            .bg-circle:nth-child(2) {
-                width: 150px;
-                height: 150px;
-                background: var(--gradient-accent);
-                top: 60%;
-                right: 10%;
-                animation-delay: 5s;
-            }
+        .bg-circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            background: var(--gradient-accent);
+            top: 60%;
+            right: 10%;
+            animation-delay: 5s;
+        }
 
-            .bg-circle:nth-child(3) {
-                width: 300px;
-                height: 300px;
-                background: var(--gradient-primary);
-                bottom: 20%;
-                left: 15%;
-                animation-delay: 10s;
-            }
+        .bg-circle:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: var(--gradient-primary);
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 10s;
+        }
 
         @@keyframes float {
             0%, 100% {
                 transform: translateY(0px) scale(1);
                 opacity: 0.3;
             }
-
             50% {
                 transform: translateY(-30px) scale(1.1);
                 opacity: 0.6;
@@ -164,37 +163,37 @@
             overflow: hidden;
         }
 
-            .stat-card::before {
-                content: '';
-                position: absolute;
-                top: -50%;
-                left: -50%;
-                width: 200%;
-                height: 200%;
-                background: conic-gradient( rgba(0, 119, 181, 0.1) 0deg, rgba(55, 143, 233, 0.05) 90deg, rgba(245, 197, 66, 0.08) 180deg, rgba(0, 119, 181, 0.1) 270deg );
-                opacity: 0;
-                transition: opacity 0.5s ease;
-                animation: rotate 20s linear infinite;
-                z-index: -1;
-            }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                rgba(0, 119, 181, 0.1) 0deg,
+                rgba(55, 143, 233, 0.05) 90deg,
+                rgba(245, 197, 66, 0.08) 180deg,
+                rgba(0, 119, 181, 0.1) 270deg
+            );
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
 
-            .stat-card:hover::before {
-                opacity: 1;
-            }
+        .stat-card:hover::before {
+            opacity: 1;
+        }
 
-            .stat-card:hover {
-                transform: translateY(-10px) scale(1.02);
-                box-shadow: var(--shadow-heavy);
-            }
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
 
         @@keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .stat-icon {
@@ -240,16 +239,16 @@
             position: relative;
         }
 
-            .table-container::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                background: var(--gradient-primary);
-                z-index: 1;
-            }
+        .table-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            z-index: 1;
+        }
 
         .table-header {
             background: var(--gradient-dark);
@@ -284,12 +283,12 @@
             cursor: pointer;
         }
 
-            .btn-action:hover {
-                background: rgba(255, 255, 255, 0.3);
-                transform: translateY(-2px);
-                color: white;
-                text-decoration: none;
-            }
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
 
         .posts-grid {
             padding: 2rem;
@@ -300,19 +299,19 @@
             overflow-y: auto;
         }
 
-            .posts-grid::-webkit-scrollbar {
-                width: 8px;
-            }
+        .posts-grid::-webkit-scrollbar {
+            width: 8px;
+        }
 
-            .posts-grid::-webkit-scrollbar-track {
-                background: rgba(0, 119, 181, 0.1);
-                border-radius: 10px;
-            }
+        .posts-grid::-webkit-scrollbar-track {
+            background: rgba(0, 119, 181, 0.1);
+            border-radius: 10px;
+        }
 
-            .posts-grid::-webkit-scrollbar-thumb {
-                background: var(--gradient-primary);
-                border-radius: 10px;
-            }
+        .posts-grid::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 10px;
+        }
 
         .post-card {
             background: rgba(255, 255, 255, 0.95);
@@ -327,26 +326,26 @@
             transform: translateZ(0);
         }
 
-            .post-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(0, 119, 181, 0.1), transparent);
-                transition: left 0.8s ease;
-            }
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 119, 181, 0.1), transparent);
+            transition: left 0.8s ease;
+        }
 
-            .post-card:hover::before {
-                left: 100%;
-            }
+        .post-card:hover::before {
+            left: 100%;
+        }
 
-            .post-card:hover {
-                transform: translateY(-8px) scale(1.02) rotateX(2deg);
-                box-shadow: var(--shadow-heavy);
-                border-color: rgba(0, 119, 181, 0.3);
-            }
+        .post-card:hover {
+            transform: translateY(-8px) scale(1.02) rotateX(2deg);
+            box-shadow: var(--shadow-heavy);
+            border-color: rgba(0, 119, 181, 0.3);
+        }
 
         .post-header {
             display: flex;
@@ -368,9 +367,9 @@
             transition: all 0.3s ease;
         }
 
-            .author-avatar:hover {
-                transform: scale(1.1) rotate(5deg);
-            }
+        .author-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
 
         .author-info {
             flex: 1;
@@ -421,9 +420,9 @@
             transition: all 0.3s ease;
         }
 
-            .post-media:hover {
-                transform: scale(1.02);
-            }
+        .post-media:hover {
+            transform: scale(1.02);
+        }
 
         .post-stats {
             display: flex;
@@ -448,10 +447,10 @@
             cursor: pointer;
         }
 
-            .reaction:hover {
-                color: var(--linkedin-blue);
-                transform: translateY(-2px) scale(1.05);
-            }
+        .reaction:hover {
+            color: var(--linkedin-blue);
+            transform: translateY(-2px) scale(1.05);
+        }
 
         .reaction-icon {
             font-size: 1.1rem;
@@ -479,25 +478,25 @@
             overflow: hidden;
         }
 
-            .action-btn::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: rgba(255, 255, 255, 0.2);
-                transition: left 0.3s ease;
-            }
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
 
-            .action-btn:hover::before {
-                left: 100%;
-            }
+        .action-btn:hover::before {
+            left: 100%;
+        }
 
-            .action-btn:hover {
-                transform: translateY(-2px) scale(1.05);
-                box-shadow: var(--shadow-medium);
-            }
+        .action-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--shadow-medium);
+        }
 
         .post-type-badge {
             position: absolute;
@@ -520,29 +519,29 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: conic-gradient( var(--linkedin-blue) 0deg, var(--linkedin-light-blue) 120deg, var(--linkedin-gold) 240deg, var(--linkedin-blue) 360deg );
+            background: conic-gradient(
+                var(--linkedin-blue) 0deg,
+                var(--linkedin-light-blue) 120deg,
+                var(--linkedin-gold) 240deg,
+                var(--linkedin-blue) 360deg
+            );
             display: flex;
             align-items: center;
             justify-content: center;
             animation: spin 10s linear infinite;
         }
 
-            .engagement-ring::after {
-                content: '';
-                width: 30px;
-                height: 30px;
-                background: white;
-                border-radius: 50%;
-            }
+        .engagement-ring::after {
+            content: '';
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+        }
 
         @@keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .empty-state {
@@ -562,7 +561,6 @@
                 opacity: 0;
                 transform: translateY(-30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -574,7 +572,6 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -586,15 +583,15 @@
                 grid-template-columns: 1fr;
                 padding: 1rem;
             }
-
+            
             .stats-cards {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
-
+            
             .page-title {
                 font-size: 2.5rem;
             }
-
+            
             .post-card {
                 padding: 1rem;
             }
@@ -612,13 +609,8 @@
         }
 
         @@keyframes loading {
-            0% {
-                background-position: 200% 0;
-            }
-
-            100% {
-                background-position: -200% 0;
-            }
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
@@ -667,8 +659,149 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-number">@(engagementRate)%</div>
-                <div class="stat-label">Müsbət Komentlərin Statistika Faizi</div>
+                <div class="stat-label">Engagement Oranı</div>
             </div>
+        </div>
+        <div class="container mt-4">
+            <h2 class="text-center" style="padding-top: 80px; margin-bottom: 40px; color: #0077B5; font-weight: 600;">
+                @ViewData["Title"]
+            </h2>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body text-center">
+                            <h5>Total Posts</h5>
+                            <h2>@ViewBag.TotalPosts</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
+                        <div class="card-body text-center">
+                            <h5>Total Reactions</h5>
+                            <h2>@ViewBag.TotalReactions</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-info">
+                        <div class="card-body text-center">
+                            <h5>Total Likes</h5>
+                            <h2>@ViewBag.TotalLikes</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body text-center">
+                            <h5>Total Reposts</h5>
+                            <h2>@ViewBag.TotalReposts</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-5">
+                <!-- Reactions Chart -->
+                <div class="col-md-6">
+                    <div class="card shadow p-3 bg-white rounded">
+                        <div class="card-body text-center">
+                            <h4 class="card-title mb-4">Statistika</h4>
+                            <div style="display:flex; justify-content:center; align-items:center;">
+                                <canvas id="reactionsChart" style="max-width:300px; max-height:300px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Engagement Timeline -->
+                <div class="col-md-6">
+                    <div class="card shadow p-3 bg-white rounded">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4 text-center">Post Engagement</h4>
+                            <canvas id="engagementChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts List -->
+            <h1 class="mb-4">LinkedIn Posts</h1>
+            @foreach (var post in Model)
+            {
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                    <div class="card-body">
+                        <!-- Author Info -->
+                        <div class="d-flex align-items-center mb-3">
+                            @if (!string.IsNullOrEmpty(post.Author?.LogoUrl))
+                            {
+                                <img src="@post.Author.LogoUrl" alt="Company Logo"
+                                     style="width:50px;height:50px;border-radius:50%;margin-right:15px;" />
+                            }
+                            <div>
+                                <h5 class="mb-0">@post.Author?.Name</h5>
+                                <small class="text-muted">@post.Author?.FollowerCount followers</small>
+                            </div>
+                        </div>
+
+                        <!-- Post Content -->
+                        <p><strong>Post:</strong> @post.Text</p>
+                        <p><small class="text-muted">Posted: @post.PostedAt?.Date</small></p>
+
+                        <!-- Media -->
+                        @if (post.Media?.Items != null && post.Media.Items.Any())
+                        {
+                            <div class="mb-3">
+                                @foreach (var item in post.Media.Items)
+                                {
+                                    @if (!string.IsNullOrEmpty(item.Url))
+                                    {
+                                        <img src="@item.Url" alt="Post Media"
+                                             style="max-width:100%;height:auto;border-radius:8px;" class="mb-2" />
+                                    }
+                                }
+                            </div>
+                        }
+
+                        <!-- Stats -->
+                        <div class="row text-center mt-3">
+                            <div class="col">
+                                <strong>@(post.Stats?.TotalReactions ?? 0)</strong>
+                                <br /><small>Reactions</small>
+                            </div>
+                            <div class="col">
+                                <strong>@(post.Stats?.Like ?? 0)</strong>
+                                <br /><small>👍 Likes</small>
+                            </div>
+                            <div class="col">
+                                <strong>@(post.Stats?.Love ?? 0)</strong>
+                                <br /><small>❤️ Loves</small>
+                            </div>
+                            <div class="col">
+                                <strong>@(post.Stats?.Celebrate ?? 0)</strong>
+                                <br /><small>🎉 Celebrates</small>
+                            </div>
+                            <div class="col">
+                                <strong>@(post.Stats?.Reposts ?? 0)</strong>
+                                <br /><small>🔄 Reposts</small>
+                            </div>
+                        </div>
+
+                        <!-- Post Link -->
+                        @if (!string.IsNullOrEmpty(post.PostUrl))
+                        {
+                            <div class="mt-3">
+                                <a href="@post.PostUrl" target="_blank" class="btn btn-outline-primary btn-sm">
+                                    LinkedIn-də Bax
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
 
         <!-- Table Container -->
@@ -714,19 +847,19 @@
                             _ => "var(--gradient-primary)"
                         };
 
-                        var postDate = DateTime.TryParse(post.PostedAt?.Date, out var parsedDate)
-                        ? GetRelativeTime(parsedDate)
-                        : post.PostedAt?.Relative ?? "Bilinmir";
-
+                        var postDate = DateTime.TryParse(post.PostedAt?.Date, out var parsedDate) 
+                            ? GetRelativeTime(parsedDate) 
+                            : post.PostedAt?.Relative ?? "Bilinmir";
+                    
                         <div class="post-card" data-post-id="@post.Id">
                             <div class="engagement-ring"></div>
                             <div class="post-type-badge" style="background: @postTypeColor;">
                                 @(post.PostType ?? "Post")
                             </div>
-
+                            
                             <div class="post-header">
-                                <img src="@(post.Author?.LogoUrl ?? "https://via.placeholder.com/60")"
-                                     alt="@(post.Author?.Name ?? "Author")"
+                                <img src="@(post.Author?.LogoUrl ?? "https://via.placeholder.com/60")" 
+                                     alt="@(post.Author?.Name ?? "Author")" 
                                      class="author-avatar"
                                      onerror="this.src='https://via.placeholder.com/60'">
                                 <div class="author-info">
@@ -745,8 +878,8 @@
                                 </div>
                                 @if (post.Media?.Items != null && post.Media.Items.Any())
                                 {
-                                    <img src="@post.Media.Items.FirstOrDefault()?.Url"
-                                         alt="Post Media"
+                                    <img src="@post.Media.Items.FirstOrDefault()?.Url" 
+                                         alt="Post Media" 
                                          class="post-media"
                                          onerror="this.style.display='none'">
                                 }
@@ -797,12 +930,12 @@
     <script>
         // Real data from controller
         const linkedinPosts = @Html.Raw(Json.Serialize(Model ?? new List<LinkedInPost>()));
-
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize the dashboard with real data
             initializeDashboard();
             addInteractiveEffects();
-
+            
             // Initialize tooltips
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
             tooltipTriggerList.map(function(tooltipTriggerEl) {
@@ -881,7 +1014,7 @@
                         animation: ripple-animation 0.6s linear;
                         pointer-events: none;
                     }
-
+                    
                     @@keyframes ripple-animation {
                         to {
                             transform: scale(4);
@@ -940,7 +1073,7 @@
         // Action functions
         function exportData() {
             showNotification('Məlumatlar export edilir...', 'info');
-
+            
             setTimeout(() => {
                 const data = JSON.stringify(linkedinPosts, null, 2);
                 const blob = new Blob([data], { type: 'application/json' });
@@ -952,7 +1085,7 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-
+                
                 showNotification('Məlumatlar uğurla export edildi!', 'success');
             }, 1500);
         }
@@ -960,7 +1093,7 @@
         function toggleView() {
             const postsGrid = document.getElementById('postsGrid');
             const toggleBtn = event.target.closest('.btn-action');
-
+            
             if (postsGrid.style.gridTemplateColumns === '1fr') {
                 postsGrid.style.gridTemplateColumns = 'repeat(auto-fit, minmax(400px, 1fr))';
                 toggleBtn.innerHTML = '<i class="fas fa-list"></i> List';
@@ -983,7 +1116,7 @@
 
         function sharePost(postId) {
             const postUrl = window.location.href + '#post-' + postId;
-
+            
             if (navigator.share) {
                 navigator.share({
                     title: 'LinkedIn Post - Rabita Bank',
@@ -1018,18 +1151,18 @@
 
         function analyzePost(postId) {
             showNotification('Post analizi başladı...', 'info');
-
+            
             // Find the post data
             const post = linkedinPosts.find(p => p.id === postId || p.Id === postId);
-
+            
             if (post) {
                 setTimeout(() => {
                     const stats = post.stats || post.Stats || {};
                     const totalReactions = (stats.totalReactions || stats.TotalReactions || 0);
-                    const engagement = post.author?.followerCount > 0
+                    const engagement = post.author?.followerCount > 0 
                         ? ((totalReactions / post.author.followerCount) * 100).toFixed(2)
                         : '0';
-
+                    
                     showNotification(`Post analizi: ${totalReactions} reaksiya, ${engagement}% engagement`, 'success');
                 }, 2000);
             } else {
@@ -1073,8 +1206,8 @@
                     .notification-warning { background: linear-gradient(135deg, #F39C12, #E67E22); }
                     .notification-info { background: linear-gradient(135deg, #3498DB, #2980B9); }
                     .notification-content { display: flex; align-items: center; gap: 10px; }
-                    .notification-close {
-                        background: none; border: none; color: white; cursor: pointer;
+                    .notification-close { 
+                        background: none; border: none; color: white; cursor: pointer; 
                         margin-left: auto; padding: 0; font-size: 14px;
                     }
                     @@keyframes slideInRight {
@@ -1086,7 +1219,7 @@
             }
 
             document.body.appendChild(notification);
-
+            
             // Auto remove after 5 seconds
             setTimeout(() => {
                 if (notification.parentElement) {
@@ -1117,7 +1250,7 @@
             postCards.forEach(card => {
                 const text = card.querySelector('.post-text')?.textContent.toLowerCase() || '';
                 const author = card.querySelector('.author-name')?.textContent.toLowerCase() || '';
-
+                
                 if (text.includes(query) || author.includes(query) || query === '') {
                     card.style.display = 'block';
                     card.style.animation = 'fadeInUp 0.3s ease-out';
@@ -1141,13 +1274,13 @@
                     searchInput.focus();
                 }
             }
-
+            
             // Ctrl/Cmd + R for refresh
             if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
                 e.preventDefault();
                 window.location.reload();
             }
-
+            
             // Esc to clear search
             if (e.key === 'Escape') {
                 const searchInput = document.getElementById('searchInput');
@@ -1225,7 +1358,7 @@
     private string GetRelativeTime(DateTime date)
     {
         var timeSpan = DateTime.Now - date;
-
+        
         if (timeSpan.TotalMinutes < 1)
             return "İndi";
         else if (timeSpan.TotalMinutes < 60)
@@ -1241,4 +1374,76 @@
         else
             return $"{(int)(timeSpan.TotalDays / 365)} il əvvəl";
     }
+
+
 }
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Reactions Pie Chart
+        const reactionsCtx = document.getElementById('reactionsChart').getContext('2d');
+        new Chart(reactionsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['👍 Like', '❤️ Love', '🎉 Celebrate'],
+                datasets: [{
+                    data: [@ViewBag.TotalLikes, @ViewBag.TotalLoves, @ViewBag.TotalCelebrates],
+                    backgroundColor: ['#0077B5', '#E74C3C', '#F39C12'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Engagement Bar Chart
+        const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+        const posts = @Html.Raw(Json.Serialize(Model.Select(p => new {
+            text = p.Text?.Substring(0, Math.Min(30, p.Text?.Length ?? 0)) + "...",
+            reactions = p.Stats?.TotalReactions ?? 0,
+            reposts = p.Stats?.Reposts ?? 0,
+            date = p.PostedAt?.Date
+        }).Take(10)));
+
+        new Chart(engagementCtx, {
+            type: 'bar',
+            data: {
+                labels: posts.map(p => p.date || 'N/A'),
+                datasets: [
+                    {
+                        label: 'Reactions',
+                        data: posts.map(p => p.reactions),
+                        backgroundColor: '#0077B5'
+                    },
+                    {
+                        label: 'Reposts',
+                        data: posts.map(p => p.reposts),
+                        backgroundColor: '#00A0DC'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: { position: 'top' }
+                }
+            }
+        });
+    </script>
+    }
