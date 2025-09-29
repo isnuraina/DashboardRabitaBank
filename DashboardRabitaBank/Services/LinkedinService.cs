@@ -11,7 +11,7 @@ namespace DashboardRabitaBank.Services
         private readonly IMongoDatabase _database;
         private readonly LinkedinMongoSettings _settings;
         public LinkedinService(IOptions<LinkedinMongoSettings> settings)
-        { 
+        {
             _settings = settings.Value ?? throw new ArgumentNullException(nameof(settings));
             var client = new MongoClient(_settings.ConnectionString);
             _database = client.GetDatabase(_settings.DatabaseName);

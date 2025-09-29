@@ -1,0 +1,464 @@
+﻿@model List<DashboardRabitaBank.Models.FacebookPost>
+@{
+    ViewData["Title"] = "Facebook Postlar";
+}
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+            .header h1 {
+                color: #2e7d32;
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .header p {
+                color: #558b2f;
+                font-size: 1.1rem;
+            }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: white;
+            color: #2e7d32;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+        }
+
+            .nav-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(46, 125, 50, 0.25);
+                background: #4caf50;
+                color: white;
+            }
+
+            .nav-btn.active {
+                background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+                color: white;
+            }
+
+        .stats-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 30px;
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.12);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4caf50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.12);
+            transition: all 0.3s ease;
+            border-left: 5px solid #4caf50;
+        }
+
+            .post-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 32px rgba(46, 125, 50, 0.18);
+            }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f8e9;
+        }
+
+        .post-date {
+            color: #666;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+        }
+
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: #f1f8e9;
+            border-radius: 12px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .post-text {
+            color: #333;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+            .post-text::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .post-text::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 10px;
+            }
+
+            .post-text::-webkit-scrollbar-thumb {
+                background: #4caf50;
+                border-radius: 10px;
+            }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .engagement-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .engagement-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .engagement-icon {
+            font-size: 1.2rem;
+        }
+
+        .post-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+            .post-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+            }
+
+        .comments-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.12);
+        }
+
+            .empty-state svg {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 20px;
+                opacity: 0.5;
+            }
+
+        .error-box {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ef5350;
+        }
+
+        @@keyframes fadeInDown {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@keyframes fadeInUp {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .post-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Rabitə Bank - Facebook Postlar</h1>
+            <p>Bütün paylaşımlar və statistikalar</p>
+            @if (ViewBag.Error != null)
+            {
+                <div class="error-box">
+                    <strong>❌ Xəta:</strong> @ViewBag.Error
+                </div>
+            }
+        </div>
+
+        <div class="nav-buttons">
+            <a href="/Facebook/Posts" class="nav-btn active">📱 Postlar</a>
+            <a href="/Facebook/Comments" class="nav-btn">💬 Şərhlər</a>
+        </div>
+
+        @if (ViewBag.PostCount != null)
+        {
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number">@ViewBag.PostCount</div>
+                    <div class="stat-label">Cəmi Post</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">@ViewBag.TotalComments</div>
+                    <div class="stat-label">Cəmi Şərh</div>
+                </div>
+            </div>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="posts-grid">
+                @foreach (var post in Model)
+                {
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-date">
+                                📅 @post.Time.ToString("dd MMM yyyy, HH:mm")
+                            </div>
+                            <div class="post-stats">
+                                @if (post.Comments != null && post.Comments.Length > 0)
+                                {
+                                    <span class="comments-badge">
+                                        💬 @post.Comments.Length
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="post-text">
+                            @if (!string.IsNullOrEmpty(post.Text))
+                            {
+                                @post.Text
+                            }
+                            else
+                            {
+                                <em style="color: #999;">Post mətni mövcud deyil</em>
+                            }
+                        </div>
+
+                        <div class="post-footer">
+                            <div class="engagement-stats">
+                                @{
+                                    var likesCount = "0";
+                                    var sharesCount = "0";
+                                    var viewsCount = "0";
+
+                                    try
+                                    {
+                                        if (post.Likes != null && !post.Likes.IsBsonNull)
+                                        {
+                                            if (post.Likes.IsBsonDocument && post.Likes.AsBsonDocument.Contains("$numberInt"))
+                                            {
+                                                likesCount = post.Likes.AsBsonDocument["$numberInt"].AsString;
+                                            }
+                                            else if (post.Likes.IsInt32)
+                                            {
+                                                likesCount = post.Likes.AsInt32.ToString();
+                                            }
+                                        }
+
+                                        if (post.Shares != null && !post.Shares.IsBsonNull)
+                                        {
+                                            if (post.Shares.IsBsonDocument && post.Shares.AsBsonDocument.Contains("$numberInt"))
+                                            {
+                                                sharesCount = post.Shares.AsBsonDocument["$numberInt"].AsString;
+                                            }
+                                            else if (post.Shares.IsInt32)
+                                            {
+                                                sharesCount = post.Shares.AsInt32.ToString();
+                                            }
+                                        }
+
+                                        if (post.ViewsCount != null && !post.ViewsCount.IsBsonNull)
+                                        {
+                                            if (post.ViewsCount.IsBsonDocument && post.ViewsCount.AsBsonDocument.Contains("$numberInt"))
+                                            {
+                                                viewsCount = post.ViewsCount.AsBsonDocument["$numberInt"].AsString;
+                                            }
+                                            else if (post.ViewsCount.IsInt32)
+                                            {
+                                                viewsCount = post.ViewsCount.AsInt32.ToString();
+                                            }
+                                        }
+                                    }
+                                    catch { }
+                                }
+
+                                <div class="engagement-item">
+                                    <span class="engagement-icon">👍</span>
+                                    <span>@likesCount</span>
+                                </div>
+                                <div class="engagement-item">
+                                    <span class="engagement-icon">🔄</span>
+                                    <span>@sharesCount</span>
+                                </div>
+                                <div class="engagement-item">
+                                    <span class="engagement-icon">👁️</span>
+                                    <span>@viewsCount</span>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(post.Url))
+                            {
+                                <a href="@post.Url" target="_blank" class="post-link">
+                                    🔗 Posta bax
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+                <h3>Heç bir post tapılmadı</h3>
+                <p>Hazırda göstəriləcək post yoxdur.</p>
+            </div>
+        }
+    </div>
+</body>
+</html>

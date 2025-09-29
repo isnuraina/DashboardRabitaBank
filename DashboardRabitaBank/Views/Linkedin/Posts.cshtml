@@ -667,7 +667,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-number">@(engagementRate)%</div>
-                <div class="stat-label">Müsbət Komentlərin Statistika Faizi</div>
+                <div class="stat-label">Engagement Oranı</div>
             </div>
         </div>
 
@@ -762,10 +762,7 @@
                                         <i class="fas fa-heart reaction-icon" style="color: #FF6B35;"></i>
                                         <span class="reaction-count">@(post.Stats?.Love ?? 0)</span>
                                     </div>
-                                    <div class="reaction" title="Təbrik">
-                                        <i class="fas fa-trophy reaction-icon" style="color: #F5C542;"></i>
-                                        <span class="reaction-count">@(post.Stats?.Celebrate ?? 0)</span>
-                                    </div>
+
                                     <div class="reaction" title="Paylaşımlar">
                                         <i class="fas fa-retweet reaction-icon" style="color: #00A0DC;"></i>
                                         <span class="reaction-count">@(post.Stats?.Reposts ?? 0)</span>
