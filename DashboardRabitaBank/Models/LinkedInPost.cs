@@ -39,6 +39,6 @@ namespace DashboardRabitaBank.Models
 
         [BsonElement("stats")]
         public LinkedInStats Stats { get; set; }
-      
+
     }
 }

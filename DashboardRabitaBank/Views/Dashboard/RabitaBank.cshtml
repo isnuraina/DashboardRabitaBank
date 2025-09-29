@@ -47,7 +47,7 @@
 
                 @if (!string.IsNullOrEmpty(post.PostInfo?.DisplayUrl))
                 {
-                    <img src="@post.PostInfo.DisplayUrl" alt="Post Image" style="width:300px;height:auto;" class="mb-3" />
+                    <img src="~/assets/img/imgr.jpg" alt="Post Image" style="width:100px;height:auto;" class="mb-3" />
                 }
 
                
@@ -70,7 +70,7 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(comment.CommentatorProfilePicUrl))
                                     {
-                                        <img src="@comment.CommentatorProfilePicUrl"
+                                        <img src="~/assets/img/images.png"
                                              alt="Profile Pic"
                                              style="width:40px;height:40px;border-radius:50%;cursor:pointer;"
                                              onclick="window.open('https://www.instagram.com/p/DNF7bh-NWY_', '_blank')" />
