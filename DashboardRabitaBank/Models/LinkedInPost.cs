@@ -8,7 +8,7 @@ namespace DashboardRabitaBank.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }  // _id və ya full_urn
+        public string Id { get; set; }
 
         [BsonElement("full_urn")]
         public string FullUrn { get; set; }
@@ -40,5 +40,8 @@ namespace DashboardRabitaBank.Models
         [BsonElement("stats")]
         public LinkedInStats Stats { get; set; }
 
+       
+        [BsonElement("comments")]
+        public List<LinkedInComment> Comments { get; set; }
     }
-}
+    }

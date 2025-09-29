@@ -290,11 +290,20 @@
             text-decoration: none;
         }
 
-        .posts-grid {
+        /* .posts-grid {
             padding: 2rem;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 2rem;
+            max-height: 800px;
+            overflow-y: auto;
+        } */
+
+        .posts-grid {
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
             max-height: 800px;
             overflow-y: auto;
         }
@@ -313,11 +322,23 @@
             border-radius: 10px;
         }
 
-        .post-card {
+        /* .post-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 1.5rem;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 119, 181, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0);
+        } */
+        .post-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 1rem;
             box-shadow: var(--shadow-card);
             border: 1px solid rgba(0, 119, 181, 0.1);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -347,16 +368,26 @@
             border-color: rgba(0, 119, 181, 0.3);
         }
 
-        .post-header {
+       /*  .post-header {
             display: flex;
             align-items: center;
             gap: 15px;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid rgba(0, 119, 181, 0.1);
+        } */
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(0, 119, 181, 0.1);
         }
 
-        .author-avatar {
+
+        /* .author-avatar {
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -365,7 +396,19 @@
             background: var(--gradient-primary);
             padding: 2px;
             transition: all 0.3s ease;
+        } */
+
+        .author-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid transparent;
+            background: var(--gradient-primary);
+            padding: 2px;
+            transition: all 0.3s ease;
         }
+
 
         .author-avatar:hover {
             transform: scale(1.1) rotate(5deg);
@@ -375,14 +418,21 @@
             flex: 1;
         }
 
-        .author-name {
+        /* .author-name {
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--linkedin-dark);
             margin-bottom: 0.25rem;
+        } */
+
+        .author-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--linkedin-dark);
+            margin-bottom: 0.2rem;
         }
 
-        .author-followers {
+       /*  .author-followers {
             font-size: 0.85rem;
             color: var(--linkedin-gray);
             display: flex;
@@ -394,9 +444,23 @@
             font-size: 0.8rem;
             color: var(--linkedin-gray);
             text-align: right;
+        } */
+
+        .author-followers {
+            font-size: 0.75rem;
+            color: var(--linkedin-gray);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .post-content {
+        .post-date {
+            font-size: 0.7rem;
+            color: var(--linkedin-gray);
+            text-align: right;
+        }
+
+        /* .post-content {
             margin-bottom: 1.5rem;
         }
 
@@ -418,13 +482,37 @@
             border-radius: 15px;
             margin-bottom: 1rem;
             transition: all 0.3s ease;
+        } */
+
+        .post-content {
+            margin-bottom: 1rem;
+        }
+
+        .post-text {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--linkedin-dark);
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .post-media {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
         }
 
         .post-media:hover {
             transform: scale(1.02);
         }
 
-        .post-stats {
+        /* .post-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -445,26 +533,58 @@
             color: var(--linkedin-gray);
             transition: all 0.3s ease;
             cursor: pointer;
+        } */
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.75rem;
+            border-top: 2px solid rgba(0, 119, 181, 0.1);
         }
+
+        .reactions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .reaction {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            color: var(--linkedin-gray);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
 
         .reaction:hover {
             color: var(--linkedin-blue);
             transform: translateY(-2px) scale(1.05);
         }
 
-        .reaction-icon {
+      /*   .reaction-icon {
             font-size: 1.1rem;
         }
 
         .reaction-count {
             font-weight: 600;
+        } */
+
+        .reaction-icon {
+            font-size: 0.95rem;
+        }
+
+        .reaction-count {
+            font-weight: 600;
+            font-size: 0.8rem;
         }
 
         .post-actions {
             display: flex;
             gap: 10px;
         }
-
+/* 
         .action-btn {
             background: var(--gradient-primary);
             border: none;
@@ -472,6 +592,18 @@
             border-radius: 10px;
             padding: 8px 12px;
             font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        } */
+        .action-btn {
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -498,7 +630,7 @@
             box-shadow: var(--shadow-medium);
         }
 
-        .post-type-badge {
+        /* .post-type-badge {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -537,7 +669,43 @@
             height: 30px;
             background: white;
             border-radius: 50%;
+        } */
+
+        .post-type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            box-shadow: var(--shadow-light);
         }
+
+        .engagement-ring {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: conic-gradient( var(--linkedin-blue) 0deg, var(--linkedin-light-blue) 120deg, var(--linkedin-gold) 240deg, var(--linkedin-blue) 360deg );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 10s linear infinite;
+        }
+
+            .engagement-ring::after {
+                content: '';
+                width: 22px;
+                height: 22px;
+                background: white;
+                border-radius: 50%;
+            }
 
         @@keyframes spin {
             from { transform: rotate(0deg); }
@@ -577,30 +745,38 @@
                 transform: translateY(0);
             }
         }
-
         @@media (max-width: 768px) {
-            .posts-grid {
-                grid-template-columns: 1fr;
-                padding: 1rem;
-            }
-            
-            .stats-cards {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
-            
-            .page-title {
-                font-size: 2.5rem;
-            }
-            
-            .post-card {
-                padding: 1rem;
-            }
+            .posts-grid
 
-            .table-header {
-                flex-direction: column;
-                gap: 1rem;
-            }
+        {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+            gap: 1rem;
         }
+
+        .post-card {
+            padding: 0.75rem;
+        }
+
+        }
+        @@media (min-width: 769px) and (max-width: 1200px) {
+            .posts-grid
+
+        {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        }
+
+        @@media (min-width: 1201px) {
+            .posts-grid
+
+        {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        }
+    
 
         .loading-skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -661,6 +837,7 @@
                 <div class="stat-number">@(engagementRate)%</div>
                 <div class="stat-label">Engagement Oranı</div>
             </div>
+
         </div>
         <div class="container mt-4">
             <h2 class="text-center" style="padding-top: 80px; margin-bottom: 40px; color: #0077B5; font-weight: 600;">
@@ -698,6 +875,21 @@
                         <div class="card-body text-center">
                             <h5>Total Reposts</h5>
                             <h2>@ViewBag.TotalReposts</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body text-center d-flex flex-column justify-content-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-bell text-warning" style="font-size: 2.5rem;"></i>
+                            </div>
+                            <h5 class="card-title mb-3 fw-bold">Alarm Posts</h5>
+                            <a asp-controller="Linkedin" asp-action="AlarmPosts"
+                               class="btn btn-warning btn-sm text-white fw-semibold">
+                                <i class="fas fa-search me-2"></i>View Alarm Posts
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -832,6 +1024,7 @@
                         <h3>Hələ ki post yoxdur</h3>
                         <p>LinkedIn postları burada görünəcək</p>
                     </div>
+
                 }
                 else
                 {
