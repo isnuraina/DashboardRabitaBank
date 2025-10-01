@@ -136,21 +136,47 @@ namespace DashboardRabitaBank.Controllers
         }
         public IActionResult AlarmPostsInsight()
         {
-            // Sinxron bloklama (DİQQƏT: Performansa mənfi təsir edə bilər)
             List<Post> insights = _insightService.GetRabitaInsightsAlarmPosts().Result;
             List<Post> juniors = _insightService.GetRabitaJuniorAlarmPosts().Result;
             List<Post> banks = _insightService.GetRabitaBankAlarmPosts().Result;
 
-            // Nəticələri birləşdirib tarixinə görə azalan sıra ilə (ən yeniləri üstdə) sıralayırıq
             var allAlarmPosts = insights.Concat(juniors)
                                         .Concat(banks)
                                         .OrderByDescending(p => p.PostInfo.Timestamp)
                                         .ToList();
 
-            // View-də başlığın hansı mənbədən gəldiyini göstərmək üçün
             ViewData["Source"] = "Bütün Insight Instagram Kolleksiyaları";
 
-            // AlarmPosts.cshtml View-ni istifadə edir və birləşdirilmiş siyahını göndərir
+            return View(allAlarmPosts);
+        }
+        public IActionResult AlarmPostsJunior()
+        {
+            List<Post> insights = _insightService.GetRabitaInsightsAlarmPosts().Result;
+            List<Post> juniors = _insightService.GetRabitaJuniorAlarmPosts().Result;
+            List<Post> banks = _insightService.GetRabitaBankAlarmPosts().Result;
+
+            var allAlarmPosts = juniors.Concat(juniors)
+                                        .Concat(banks)
+                                        .OrderByDescending(p => p.PostInfo.Timestamp)
+                                        .ToList();
+
+            ViewData["Source"] = "Bütün Junior Instagram Kolleksiyaları";
+
+            return View(allAlarmPosts);
+        }
+        public IActionResult AlarmPostsRabita()
+        {
+            List<Post> insights = _insightService.GetRabitaInsightsAlarmPosts().Result;
+            List<Post> juniors = _insightService.GetRabitaJuniorAlarmPosts().Result;
+            List<Post> banks = _insightService.GetRabitaBankAlarmPosts().Result;
+
+            var allAlarmPosts = banks.Concat(juniors)
+                                        .Concat(banks)
+                                        .OrderByDescending(p => p.PostInfo.Timestamp)
+                                        .ToList();
+
+            ViewData["Source"] = "Bütün Rabita Instagram Kolleksiyaları";
+
             return View(allAlarmPosts);
         }
 

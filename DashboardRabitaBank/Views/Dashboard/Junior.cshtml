@@ -20,6 +20,32 @@
     var data = sentimentStats.Select(s => s.Count).ToList();
 }
 
+<style>
+    .btn-3d {
+        position: relative;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: none;
+        color: white !important;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        /* Əsas kölgə effekti (aşağıdakı rəng dəyişəndə bu rəngi də dəyişin) */
+        box-shadow: 0 5px 0 #9f2a35; /* Tünd Qırmızı (Danger rənginin daha tünd tonu) */
+        transition: all 0.1s ease;
+    }
+
+        .btn-3d:active {
+            /* Düymə basılanda kölgəni azaldıb yuxarı çəkirik, 3D effekti verir */
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #9f2a35;
+        }
+
+    /* Danger (Qırmızı) rəngini override edirik ki, 3D effekti görünsün */
+    .btn-danger {
+        background-color: #dc3545 !important;
+    }
+</style>
+
 <div class="container mt-4">
     <h2 class="text-center" style="padding-top: 80px; margin-bottom: 40px; color: #28a745; font-weight: 600;">
         @ViewData["Title"]
@@ -28,7 +54,11 @@
 
     <!-- Ümumi Sentiment Chart -->
     <div class="card shadow p-3 mb-5 bg-white rounded">
+        
         <div class="card-body text-center">
+            <a asp-controller="dashboard" asp-action="AlarmPostsJunior" class="btn btn-sm btn-danger btn-3d text-uppercase">
+                <i class="fas fa-exclamation-triangle"></i> Alarmı Olan Postlar
+            </a>
             <h4 class="card-title mb-4">Ümumi Şərh Statistikası</h4>
             <div style="display:flex; justify-content:center; align-items:center;">
                 <canvas id="overallSentimentChart" style="max-width:250px; max-height:250px;"></canvas>
