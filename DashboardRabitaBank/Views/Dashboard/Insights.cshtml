@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Instagram Insights";
 
-    // Ümumi sentiment statistikası bütün postların şərhlərindən
+    // 1. Ümumi Sentiment Statistikası
     var allComments = Model
         .Where(p => p.Comments != null)
         .SelectMany(p => p.Comments)
@@ -11,112 +11,330 @@
         .ToList();
 
     var sentimentStats = allComments
-        .GroupBy(c => c.Analysis.Sentiment ?? "Other")
+        .GroupBy(c => c.Analysis.Sentiment ?? "Unknown")
         .Select(g => new { Sentiment = g.Key, Count = g.Count() })
         .ToList();
 
-    var labels = sentimentStats.Select(s => s.Sentiment).ToList();
-    var data = sentimentStats.Select(s => s.Count).ToList();
+    var overallLabels = sentimentStats.Select(s => s.Sentiment).ToList();
+    var overallData = sentimentStats.Select(s => s.Count).ToList();
 }
 
+<style>
+    /* Custom CSS: Premium Dizayn Stilləri */
+
+    /* Gradient Başlıq Stili */
+    .premium-header {
+        padding-top: 80px;
+        margin-bottom: 50px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        /* Gradient Rəng: Tünd Yaşıl-Açıq Yaşıl */
+        background: linear-gradient(90deg, #1f4037 0%, #99f2c3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Kart Dizaynı: 3D Dərinlik və Hover Effekti */
+    .premium-card {
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 18px;
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        /* Daha dərin və çoxqatlı kölgə */
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.08);
+    }
+
+        .premium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 15px 12px rgba(0, 0, 0, 0.12);
+        }
+
+    /* Şərh Rəngləri (Sentiment): Sol Sərhəddə Vurğu */
+    /* Qeyd: Bu rənglər Chart.js rəngləri ilə uyğunlaşdırılır */
+    .sentiment-positive {
+        background-color: #e6f9f2;
+        border-left: 5px solid #28a745;
+    }
+
+    .sentiment-negative {
+        background-color: #fcebeb;
+        border-left: 5px solid #dc3545;
+    }
+
+    .sentiment-neutral {
+        background-color: #fff9e6;
+        border-left: 5px solid #ffc107;
+    }
+
+    .sentiment-unknown {
+        background-color: #f5f6fa;
+        border-left: 5px solid #6c757d;
+    }
+
+    /* Cədvəl Stili */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .table th {
+        background-color: #f7f7f7;
+        color: #1f4037;
+        font-weight: 700;
+    }
+    /* YENİ: 3D Düymə Stili */
+    .btn-3d {
+        position: relative;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: none;
+        color: white !important;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        /* Əsas kölgə effekti (aşağıdakı rəng dəyişəndə bu rəngi də dəyişin) */
+        box-shadow: 0 5px 0 #9f2a35; /* Tünd Qırmızı (Danger rənginin daha tünd tonu) */
+        transition: all 0.1s ease;
+    }
+
+        .btn-3d:active {
+            /* Düymə basılanda kölgəni azaldıb yuxarı çəkirik, 3D effekti verir */
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #9f2a35;
+        }
+
+    /* Danger (Qırmızı) rəngini override edirik ki, 3D effekti görünsün */
+    .btn-danger {
+        background-color: #dc3545 !important;
+    }
+</style>
+
 <div class="container mt-4">
-    <h2 class="text-center" style="padding-top: 80px; margin-bottom: 40px; color: #28a745; font-weight: 600;">
+    <h2 class="text-center premium-header">
         @ViewData["Title"]
     </h2>
 
+    <div class="card premium-card p-4 mb-5">
+        <div class="card-body">
 
-    <!-- Ümumi Sentiment Chart -->
-    <div class="card shadow p-3 mb-5 bg-white rounded">
-        <div class="card-body text-center">
-            <h4 class="card-title mb-4">Ümumi Şərh Statistikası</h4>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="card-title mb-0" style="color: #1f4037; font-weight: 700;">Ümumi Şərh Statistikası 📊</h4>
 
-            <!-- Chart mərkəzləşdirilmiş və ölçüsü kiçildilmiş -->
-            <div style="display:flex; justify-content:center; align-items:center;">
-                <canvas id="overallSentimentChart" style="max-width:250px; max-height:250px;"></canvas>
+                <a asp-controller="dashboard" asp-action="AlarmPostsInsight" class="btn btn-sm btn-danger btn-3d text-uppercase">
+                    <i class="fas fa-exclamation-triangle"></i> Alarmı Olan Postlar
+                </a>
+            </div>
+
+            <div class="text-center" style="display:flex; justify-content:center; align-items:center; height: 350px;">
+                <canvas id="overallSentimentChart" style="max-width:350px; max-height:350px;"></canvas>
             </div>
         </div>
     </div>
-    <h1>Comments</h1>
+    <h1 class="mb-5" style="color: #1f4037; border-bottom: 3px solid #99f2c3; padding-bottom: 10px; font-weight: 600;">Postlar və Şərhlər Detalı 📝</h1>
 
     @foreach (var post in Model)
     {
-        <div class="card shadow p-3 mb-5 bg-white rounded">
+        // Hər postun öz sentiment statistikası C# kodunda hesablanır
+        var postSentimentStats = post.Comments?
+        .Where(c => c.Analysis != null)
+        .GroupBy(c => c.Analysis.Sentiment ?? "Unknown")
+        .Select(g => new { Sentiment = g.Key, Count = g.Count() })
+        .ToList();
+
+        // Data yoxdursa stringi boş ötürürük, JavaScript yoxlayacaq.
+        var postChartLabels = postSentimentStats?.Select(s => s.Sentiment).ToList() ?? new List<string>();
+        var postChartData = postSentimentStats?.Select(s => s.Count).ToList() ?? new List<int>();
+
+        <div class="card premium-card p-4 mb-5">
             <div class="card-body">
-                <h6>@post.PostInfo?.Caption</h6>
-                <p><strong>Owner:</strong> @post.PostInfo?.OwnerUsername</p>
-                <p><strong>Likes:</strong> @post.PostInfo?.LikesCount</p>
-                <p><strong>Timestamp:</strong> @(post.PostInfo?.Timestamp.ToString("yyyy-MM-dd HH:mm"))</p>
+                <h4 style="color: #333; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    @post.PostInfo?.Caption
+                </h4>
 
-                @if (!string.IsNullOrEmpty(post.PostInfo?.DisplayUrl))
-                {
-                    <img src="~/assets/img/imgr.jpg" alt="Post Image" style="width:100px;height:auto;" class="mb-3" />
-                }
-
-                <!-- Comments Table -->
-                <h5 class="mt-3">Şərhlər</h5>
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Profile</th>
-                            <th>Username</th>
-                            <th>Comment</th>
-                            <th>Sentiment</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var comment in post.Comments)
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-3 text-center">
+                        @if (!string.IsNullOrEmpty(post.PostInfo?.DisplayUrl))
                         {
+                            <img src="~/assets/img/imgr.jpg" alt="Post Image"
+                                 style="width:100px; height:100px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" class="mb-3" />
+                        }
+                        <p class="mb-1"><strong>👤 @post.PostInfo?.OwnerUsername</strong></p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="text-success mb-1"><strong>❤️ Bəyənmə:</strong> @post.PostInfo?.LikesCount</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="text-muted mb-1"><strong>⏰ Tarix:</strong> @(post.PostInfo?.Timestamp.ToString("yyyy-MM-dd HH:mm"))</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <h6 style="color: #1f4037;">Post Sentimenti</h6>
+                        <canvas id="postSentimentChart_@post.PostInfo.PostId" style="max-width:100px; max-height:100px; margin: 0 auto;"></canvas>
+                    </div>
+                </div>
+
+                <h5 class="mt-4" style="color: #1f4037; border-left: 5px solid #99f2c3; padding-left: 15px; font-weight: 600;">Şərhlər 💬</h5>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mt-3">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(comment.CommentatorProfilePicUrl))
-                                    {
+                                <th style="width: 10%;">Profil</th>
+                                <th style="width: 15%;">İstifadəçi Adı</th>
+                                <th style="width: 55%;">Şərh Mətni</th>
+                                <th style="width: 20%;">Sentiment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var comment in post.Comments)
+                            {
+                                var sentimentClass = comment.Analysis?.Sentiment?.ToLowerInvariant() switch
+                                {
+                                    // CSS rəngləri yenilənmişdir
+                                    "positive" => "sentiment-positive",
+                                    "negative" => "sentiment-negative",
+                                    "neutral" => "sentiment-neutral",
+                                    _ => "sentiment-unknown"
+                                };
+
+                                <tr class="@sentimentClass">
+                                    <td>
                                         <img src="~/assets/img/images.png"
                                              alt="Profile Pic"
-                                             style="width:40px;height:40px;border-radius:50%;cursor:pointer;"
+                                             style="width:35px;height:35px;border-radius:50%;cursor:pointer; border: 2px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.1);"
                                              onclick="window.open('https://www.instagram.com/p/DNF7bh-NWY_', '_blank')" />
-                                    }
-                                </td>
-                                <td>@comment.CommentatorUserName</td>
-                                <td>@comment.CommentText</td>
-                                <td>@comment.Analysis?.Sentiment</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                    </td>
+                                    <td>@comment.CommentatorUserName</td>
+                                    <td>@comment.CommentText</td>
+                                    <td>
+                                        <span class="badge" style="background-color: @(sentimentClass.EndsWith("positive") ? "#28a745" : sentimentClass.EndsWith("negative") ? "#dc3545" : sentimentClass.EndsWith("neutral") ? "#ffc107" : "#6c757d"); color: white; padding: 5px 10px; border-radius: 5px;">
+                                            @comment.Analysis?.Sentiment
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <input type="hidden" id="postChartData_@post.PostInfo.PostId" data-labels="@string.Join(",", postChartLabels)" data-data="@string.Join(",", postChartData)" />
     }
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        var ctx = document.getElementById('overallSentimentChart').getContext('2d');
-        var overallChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(labels)),
-                datasets: [{
-                    label: 'Ümumi Şərh Statistikası',
-                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(data)),
-                    backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#6c757d'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed;
+        // İSTƏDİYİNİZ RƏNGLƏR TƏYİN OLUNDU: QIRMIZI, SARI, YAŞIL
+        function getColorForSentiment(sentiment) {
+            const normalizedSentiment = (sentiment || '').toLowerCase().trim();
+            switch(normalizedSentiment) {
+                case 'positive': return '#28a745'; // Yaşıl
+                case 'negative': return '#dc3545'; // Qırmızı
+                case 'neutral': return '#ffc107';  // Sarı
+                case 'no data': return '#6c757d';  // Boz
+                default: return '#6c757d';         // Unknown - Boz
+            }
+        }
+
+        // Ümumi Diaqramı Yaradan Funksiya
+        function createOverallChart() {
+            const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(overallLabels));
+            const backgroundColors = labels.map(label => getColorForSentiment(label));
+
+            const ctx = document.getElementById('overallSentimentChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ümumi Şərh Statistikası',
+                        data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(overallData)),
+                        backgroundColor: backgroundColors,
+                        hoverOffset: 18,
+                        borderColor: '#ffffff',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            backgroundColor: 'rgba(31, 64, 55, 0.95)',
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = context.parsed;
+                                    const percentage = ((value / total) * 100).toFixed(1) + '%';
+                                    return context.label + ': ' + value + ' (' + percentage + ')';
+                                }
                             }
                         }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
                     }
                 }
+            });
+        }
+
+        // Hər Post üçün Diaqramı Yaradan Funksiya (Əsas Düzəliş)
+        function createPostChart(id) {
+            const inputElement = document.getElementById(`postChartData_${id}`);
+            if (!inputElement) return;
+
+            // Gizli inputdan dataları oxuyuruq
+            const labelsRaw = inputElement.getAttribute('data-labels');
+            const dataRaw = inputElement.getAttribute('data-data');
+
+            // Məlumatları array-ə çeviririk
+            let labels = labelsRaw && labelsRaw !== "" ? labelsRaw.split(',') : [];
+            // Ən vacibi: String dataları rəqəm (Number) tipinə konvertasiya edirik
+            let data = dataRaw && dataRaw !== "" ? dataRaw.split(',').map(s => Number(s)) : [];
+
+            // Bütün məlumatların cəmini yoxlayırıq
+            const totalData = data.reduce((sum, current) => sum + current, 0);
+
+            // Məlumat yoxdursa (və ya hamısı sıfırdırsa), "No Data" rəngi ilə doldururuq
+            if (totalData === 0 || data.length === 0 || labelsRaw === "") {
+                labels = ['No Data'];
+                data = [100];
             }
+
+            // Rənglərin düzgün tətbiq edilməsi
+            const backgroundColors = labels.map(label => getColorForSentiment(label));
+
+            const ctx = document.getElementById(`postSentimentChart_${id}`).getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%', // Halqanın ölçüsünü kiçildir
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+
+        // Səhifə yüklənəndə diaqramları işə sal
+        document.addEventListener('DOMContentLoaded', () => {
+            createOverallChart();
+        @foreach (var post in Model.Where(p => p.PostInfo != null))
+        {
+            <text>createPostChart('@post.PostInfo.PostId');</text>
+        }
         });
     </script>
 }

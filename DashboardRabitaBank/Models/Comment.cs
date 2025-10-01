@@ -20,5 +20,6 @@ namespace DashboardRabitaBank.Models
 
         [BsonElement("analysis")]
         public CommentAnalysis Analysis { get; set; }
+        
     }
 }

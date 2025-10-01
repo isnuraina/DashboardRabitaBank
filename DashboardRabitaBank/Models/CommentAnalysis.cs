@@ -2,8 +2,11 @@
 
 namespace DashboardRabitaBank.Models
 {
+    [BsonIgnoreExtraElements]
     public class CommentAnalysis
     {
+        [BsonElement("is_alarm")]
+        public bool IsAlarm { get; set; }
         [BsonElement("done")]
         public bool Done { get; set; }
 
@@ -13,8 +16,6 @@ namespace DashboardRabitaBank.Models
         [BsonElement("importance")]
         public string Importance { get; set; }
 
-        [BsonElement("is_alarm")]
-        public bool IsAlarm { get; set; }
 
         [BsonElement("confidence")]
         public double Confidence { get; set; }

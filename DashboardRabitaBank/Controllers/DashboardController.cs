@@ -134,5 +134,28 @@ namespace DashboardRabitaBank.Controllers
             var model = new Tuple<List<GoogleReview>, List<GoogleReview>>(rabitaBankReviews, rabitaJuniorReviews);
             return View(model);
         }
+        public IActionResult AlarmPostsInsight()
+        {
+            // Sinxron bloklama (DİQQƏT: Performansa mənfi təsir edə bilər)
+            List<Post> insights = _insightService.GetRabitaInsightsAlarmPosts().Result;
+            List<Post> juniors = _insightService.GetRabitaJuniorAlarmPosts().Result;
+            List<Post> banks = _insightService.GetRabitaBankAlarmPosts().Result;
+
+            // Nəticələri birləşdirib tarixinə görə azalan sıra ilə (ən yeniləri üstdə) sıralayırıq
+            var allAlarmPosts = insights.Concat(juniors)
+                                        .Concat(banks)
+                                        .OrderByDescending(p => p.PostInfo.Timestamp)
+                                        .ToList();
+
+            // View-də başlığın hansı mənbədən gəldiyini göstərmək üçün
+            ViewData["Source"] = "Bütün Insight Instagram Kolleksiyaları";
+
+            // AlarmPosts.cshtml View-ni istifadə edir və birləşdirilmiş siyahını göndərir
+            return View(allAlarmPosts);
+        }
+
     }
 }
+
+
+

@@ -1,0 +1,156 @@
+﻿@model List<DashboardRabitaBank.Models.Post>
+
+@{
+    ViewData["Title"] = "Alarmı Olan Postlar";
+    var source = ViewData["Source"] as string ?? "Mənbə Bilinmir";
+}
+
+<!-- Font Awesome ikonları və Tailwind CSS-i dəstəkləyən Bootstrap stillərini fərz edirik -->
+<style>
+    /* 3D düymə stili (əgər hələ _Layout.cshtml-də deyilsə, bura əlavə edilməlidir) */
+    .btn-3d {
+        position: relative;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: none;
+        color: white !important;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 5px 0 #9f2a35; /* Tünd qırmızı (3D effekti) */
+        transition: all 0.1s ease;
+    }
+
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #9f2a35;
+        }
+
+    /* Başlıq və Ümumi Vurğu Stili */
+    .alarm-header {
+        color: #dc3545; /* Qırmızı rəng */
+        border-bottom: 3px solid #ffc107;
+        padding-bottom: 15px;
+        margin-bottom: 40px;
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Hər Post Kartı Vurğusu */
+    .alarm-post-card {
+        border-left: 6px solid #ffc107; /* Sarı/Kəhrəba vurğu */
+        background-color: #fefefe;
+        box-shadow: 0 6px 15px rgba(220, 53, 69, 0.15); /* Qırmızı kölgə effekti */
+        margin-bottom: 30px;
+        border-radius: 12px;
+        transition: transform 0.2s;
+    }
+
+        .alarm-post-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.25);
+        }
+
+    /* Alarm Şərh Stili */
+    .alarm-comment {
+        background-color: #fcebeb; /* Çox açıq alarm fonu */
+        border-left: 4px solid #dc3545; /* Qırmızı sərhəd */
+        padding: 12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+    }
+
+    .comment-meta {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    .comment-text {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #333;
+    }
+</style>
+
+<div class="container mt-5">
+
+    <!-- Başlıq -->
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="alarm-header">
+            <i class="fas fa-exclamation-triangle mr-2"></i> @ViewData["Title"]
+        </h1>
+        <p class="text-muted">Mənbə: <strong>@source</strong></p>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-success text-center mt-5" role="alert">
+            <h4 class="alert-heading">Təmizlik! ✨</h4>
+            <p>Sevindirici haldır ki, hazırda alarmı aktivləşdirilmiş post tapılmadı. Hər şey nəzarət altındadır.</p>
+        </div>
+    }
+    else
+    {
+        <div class="mb-4">
+            <span class="badge badge-danger p-2">
+                Cəmi Alarm Postları: @Model.Count
+            </span>
+        </div>
+
+        @foreach (var post in Model)
+        {
+            // Yalnız alarmı true olan şərhləri süzürük
+            var alarmComments = post.Comments?.Where(c => c.Analysis?.IsAlarm == true).ToList();
+
+            <div class="card alarm-post-card">
+                <div class="card-body p-4">
+
+                    <!-- Post Başlığı və Keçid -->
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h5 class="mb-1" style="color: #333;">
+                                Post Mətni: <span class="text-secondary font-weight-normal">
+                                    @(post.PostInfo?.Caption?.Length > 100 ? post.PostInfo.Caption.Substring(0, 100) + "..." : post.PostInfo?.Caption)
+                                </span>
+                            </h5>
+                            <small class="text-muted">
+                                <strong>@post.PostInfo?.OwnerUsername</strong> tərəfindən paylanıb |
+                                @(post.PostInfo?.Timestamp.ToString("dd MMM yyyy HH:mm"))
+                            </small>
+                        </div>
+                        <a href="/Dashboard/Index#post_@post.PostInfo.PostId" class="btn btn-sm btn-outline-danger btn-3d">
+                            Detala Bax <i class="fas fa-eye ml-1"></i>
+                        </a>
+                    </div>
+
+                    <hr class="mt-0 mb-3" />
+
+                    <h6 class="mb-3" style="color: #dc3545;">🚨 Əlaqəli Alarm Şərhləri (@alarmComments?.Count)</h6>
+
+                    @if (alarmComments != null && alarmComments.Any())
+                    {
+                        <div class="row">
+                            @foreach (var comment in alarmComments)
+                            {
+                                <div class="col-md-6">
+                                    <div class="alarm-comment">
+                                        <p class="mb-1 comment-text">
+                                            @comment.CommentText
+                                        </p>
+                                        <div class="comment-meta">
+                                            <span class="text-danger">
+                                                <strong>@comment.CommentatorUserName</strong>
+                                            </span> |
+                                            Sentiment: <span class="badge badge-warning">@comment.Analysis?.Sentiment</span> |
+                                            Əhəmiyyət: <span class="badge badge-dark">@comment.Analysis?.Importance</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
