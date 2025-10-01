@@ -1,4 +1,4 @@
-﻿@model List<DashboardRabitaBank.Models.Post>
+﻿@* @model List<DashboardRabitaBank.Models.Post>
 
 @{
     ViewData["Title"] = "Alarmı Olan Postlar";
@@ -153,4 +153,492 @@
             </div>
         }
     }
+</div>
+ *@
+
+                                            @model List<DashboardRabitaBank.Models.Post>
+
+@{
+    ViewData["Title"] = "Alarmı Olan Postlar";
+    var source = ViewData["Source"] as string ?? "Mənbə Bilinmir";
+}
+
+<style>
+    /* Premium Animated Background */
+    .alarm-page-wrapper {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 40px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .alarm-page-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(255, 107, 107, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 195, 113, 0.3) 0%, transparent 50%);
+        animation: pulse 8s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 0.9; }
+    }
+
+    /* Glassmorphism Container */
+    .glass-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+        position: relative;
+        z-index: 1;
+        padding: 50px;
+    }
+
+    /* Animated Header */
+    .alarm-header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 3rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+        margin-bottom: 15px;
+        animation: slideDown 0.8s ease-out;
+        text-shadow: none;
+        border: none;
+        padding: 0;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Floating Icon Animation */
+    .alarm-icon {
+        display: inline-block;
+        animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(220, 53, 69, 0.3));
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(-3deg); }
+        50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    /* Source Badge */
+    .source-badge {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        animation: slideDown 0.8s ease-out 0.2s both;
+    }
+
+    /* Statistics Card */
+    .stats-card {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 25px 35px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(245, 87, 108, 0.3);
+        margin-bottom: 40px;
+        animation: scaleIn 0.6s ease-out 0.4s both;
+        border: none;
+    }
+
+    @@keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .stats-card h3 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .stats-card p {
+        margin: 0;
+        opacity: 0.95;
+        font-weight: 500;
+    }
+
+    /* Premium Post Card */
+    .alarm-post-card {
+        background: white;
+        border-radius: 25px;
+        border: none;
+        overflow: hidden;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        animation: slideUp 0.6s ease-out both;
+        animation-delay: calc(var(--index) * 0.1s);
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .alarm-post-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 100%;
+        background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .alarm-post-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 60px rgba(245, 87, 108, 0.2);
+    }
+
+    /* Post Header Styling */
+    .post-header {
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        padding: 25px;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .post-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+
+    .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    .meta-item i {
+        color: #667eea;
+    }
+
+    /* 3D Action Button */
+    .btn-3d {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 28px;
+        border-radius: 12px;
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        box-shadow: 0 6px 0 #5568d3, 0 8px 20px rgba(102, 126, 234, 0.4);
+        transition: all 0.1s ease;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-3d:hover {
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 0 #5568d3, 0 10px 25px rgba(102, 126, 234, 0.5);
+        text-decoration: none;
+    }
+
+    .btn-3d:active {
+        transform: translateY(3px);
+        box-shadow: 0 3px 0 #5568d3, 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Alarm Comments Section */
+    .comments-section {
+        padding: 30px;
+    }
+
+    .section-title {
+        color: #2d3748;
+        font-weight: 700;
+        font-size: 1.2rem;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title .emoji {
+        font-size: 1.5rem;
+        animation: pulse-emoji 2s ease-in-out infinite;
+    }
+
+    @@keyframes pulse-emoji {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+    }
+
+    /* Premium Comment Card */
+    .alarm-comment {
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+        border-left: 5px solid #f5576c;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(245, 87, 108, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .alarm-comment::before {
+        content: '⚠️';
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        font-size: 4rem;
+        opacity: 0.05;
+    }
+
+    .alarm-comment:hover {
+        transform: translateX(5px);
+        box-shadow: 0 8px 25px rgba(245, 87, 108, 0.2);
+    }
+
+    .comment-text {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #2d3748;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    .comment-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .meta-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .badge-user {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .badge-sentiment {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .badge-importance {
+        background: #2d3748;
+        color: white;
+    }
+
+    /* Success Alert */
+    .success-card {
+        background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        color: white;
+        padding: 50px;
+        border-radius: 25px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(132, 250, 176, 0.3);
+        animation: scaleIn 0.8s ease-out;
+        border: none;
+    }
+
+    .success-card h4 {
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 15px;
+    }
+
+    .success-card p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .glass-container {
+            padding: 30px 20px;
+        }
+
+        .alarm-header {
+            font-size: 2rem;
+        }
+
+        .post-header {
+            padding: 20px 15px;
+        }
+
+        .comments-section {
+            padding: 20px 15px;
+        }
+    }
+</style>
+
+<div class="alarm-page-wrapper">
+    <div class="container">
+        <div class="glass-container">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between align-items-start mb-5 flex-wrap">
+                <div>
+                    <h1 class="alarm-header">
+                        <span class="alarm-icon">🚨</span> @ViewData["Title"]
+                    </h1>
+                    <div class="source-badge">
+                        <i class="fas fa-database mr-2"></i>Mənbə: @source
+                    </div>
+                </div>
+            </div>
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="success-card">
+                    <h4>✨ Təmiz Vəziyyət!</h4>
+                    <p>Sevindirici xəbər! Hazırda alarmı aktivləşdirilmiş heç bir post yoxdur. Hər şey nəzarət altındadır və problemsiz işləyir.</p>
+                </div>
+            }
+            else
+            {
+                <!-- Statistics Card -->
+                <div class="stats-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>@Model.Count</h3>
+                            <p>Alarm Post Aşkarlandı</p>
+                        </div>
+                        <div style="font-size: 3rem; opacity: 0.3;">
+                            ⚠️
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts List -->
+                {
+                    var index = 0;
+                }
+                @foreach (var post in Model)
+                {
+                    var alarmComments = post.Comments?.Where(c => c.Analysis?.IsAlarm == true).ToList();
+                    
+                    <div class="alarm-post-card" style="--index: index;">
+                        <!-- Post Header -->
+                        <div class="post-header">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                                <div class="flex-grow-1">
+                                    <div class="post-title">
+                                        @(post.PostInfo?.Caption?.Length > 120 ? post.PostInfo.Caption.Substring(0, 120) + "..." : post.PostInfo?.Caption ?? "Post mətni mövcud deyil")
+                                    </div>
+                                    <div class="post-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-user-circle"></i>
+                                            <strong>@post.PostInfo?.OwnerUsername</strong>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            @(post.PostInfo?.Timestamp.ToString("dd MMM yyyy HH:mm"))
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="/Dashboard/Index#post_@post.PostInfo.PostId" class="btn-3d">
+                                    <i class="fas fa-eye"></i>
+                                    Detala Keç
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Comments Section -->
+                        <div class="comments-section">
+                            <h6 class="section-title">
+                                <span class="emoji">🚨</span>
+                                Alarm Şərhləri (@alarmComments?.Count)
+                            </h6>
+
+                            @if (alarmComments != null && alarmComments.Any())
+                            {
+                                <div class="row">
+                                    @foreach (var comment in alarmComments)
+                                    {
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="alarm-comment">
+                                                <p class="comment-text">
+                                                    💬 "@comment.CommentText"
+                                                </p>
+                                                <div class="comment-meta">
+                                                    <span class="meta-badge badge-user">
+                                                        <i class="fas fa-user"></i>
+                                                        @comment.CommentatorUserName
+                                                    </span>
+                                                    <span class="meta-badge badge-sentiment">
+                                                        <i class="fas fa-chart-line"></i>
+                                                        @comment.Analysis?.Sentiment
+                                                    </span>
+                                                    <span class="meta-badge badge-importance">
+                                                        <i class="fas fa-star"></i>
+                                                        @comment.Analysis?.Importance
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 </div>
